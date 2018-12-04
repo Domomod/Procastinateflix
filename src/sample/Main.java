@@ -35,7 +35,7 @@ public class Main extends Application {
 
         Dystrybutor dystrybutor = new Dystrybutor();
 
-        for(int i = 0; i < 10; i++)gi
+        for(int i = 0; i < 10; i++)
             produkty.add(dystrybutor.wydajProdukt());
     }
 
