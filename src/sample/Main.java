@@ -1,5 +1,6 @@
 package sample;
 
+import Produkt.Generatory.GeneratorNazw;
 import Produkt.Produkt;
 import Produkt.Film;
 import javafx.application.Application;
@@ -40,13 +41,13 @@ public class Main extends Application {
         aktorzy.add("Bolesław Chrobry");
         Set<URL> linkiDoZwiastunow = new TreeSet<>();
 
-        Produkt przykladowyProdukt = new Film("Ślepnąć od Świateł", "Serial wyprodukowany przez blahblah blah Wysokie oceny, wysoka jakość, blah blah blah blah, Wspaniała gra aktorska blah blah blah blahblah.",
+        Produkt przykladowyProdukt = new Film(GeneratorNazw.wygenerujNazwe(), "Serial wyprodukowany przez blahblah blah Wysokie oceny, wysoka jakość, blah blah blah blah, Wspaniała gra aktorska blah blah blah blahblah.",
                 new Date(2018,6,27), czasTrwania, "Polska", aktorzy, linkiDoZwiastunow, "Akcji"  );
-        Produkt przykladowyProdukt1 = new Film("Ślepnąć od Haseł", "Serial wyprodukowany przez blahblah blah Wysokie oceny, wysoka jakość, blah blah blah blah, Wspaniała gra aktorska blah blah blah blahblah.",
+        Produkt przykladowyProdukt1 = new Film(GeneratorNazw.wygenerujNazwe(), "Serial wyprodukowany przez blahblah blah Wysokie oceny, wysoka jakość, blah blah blah blah, Wspaniała gra aktorska blah blah blah blahblah.",
                 new Date(2018,6,27), czasTrwania, "Polska", aktorzy, linkiDoZwiastunow, "Akcji"  );
-        Produkt przykladowyProdukt2 = new Film("Ślepnąć od Laser", "Serial wyprodukowany przez blahblah blah Wysokie oceny, wysoka jakość, blah blah blah blah, Wspaniała gra aktorska blah blah blah blahblah.",
+        Produkt przykladowyProdukt2 = new Film(GeneratorNazw.wygenerujNazwe(), "Serial wyprodukowany przez blahblah blah Wysokie oceny, wysoka jakość, blah blah blah blah, Wspaniała gra aktorska blah blah blah blahblah.",
                 new Date(2018,6,27), czasTrwania, "Polska", aktorzy, linkiDoZwiastunow, "Akcji"  );
-        Produkt przykladowyProdukt3 = new Film("Ślepnąć od Wafel", "Serial wyprodukowany przez blahblah blah Wysokie oceny, wysoka jakość, blah blah blah blah, Wspaniała gra aktorska blah blah blah blahblah.",
+        Produkt przykladowyProdukt3 = new Film(GeneratorNazw.wygenerujNazwe(), "Serial wyprodukowany przez blahblah blah Wysokie oceny, wysoka jakość, blah blah blah blah, Wspaniała gra aktorska blah blah blah blahblah.",
                 new Date(2018,6,27), czasTrwania, "Polska", aktorzy, linkiDoZwiastunow, "Akcji"  );
 
         produkty.add(przykladowyProdukt);

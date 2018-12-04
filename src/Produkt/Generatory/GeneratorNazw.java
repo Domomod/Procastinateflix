@@ -1,27 +1,59 @@
 package Produkt.Generatory;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
 
 public class GeneratorNazw {
-    private Set<String> slowa;
-
-    public GeneratorNazw(){
-        slowa = new TreeSet<>();
+    static public String wygenerujNazwe(){
+        String przymiotnik = Przymiotnik.random().toString();
+        String rzeczownik = Rzeczowniki.random().toString();
+        String nazwa = przymiotnik + " " + rzeczownik;
+        return nazwa;
     }
 
-    public void zaladujSlowa(Scanner zrodlo){
-        while( zrodlo.hasNext() ){
-                slowa.add( zrodlo.next() );
+    private enum Przymiotnik{
+        Wielki,
+        Zielony,
+        Tajemniczy,
+        Srebrny,
+        Dobry,
+        Trudny,
+        Czerwony,
+        Zly,
+        Szalony,
+        Okrutny,
+        Laskawy,
+        Niezdarny;
+
+        static public Przymiotnik random(){
+            Random generator = new Random();
+            int index = generator.nextInt(Przymiotnik.values().length);
+
+            return Przymiotnik.values()[index];
         }
     }
 
-    Set<String> pobiezZawieraneSlowa(){
-        return slowa;
+    private enum Rzeczowniki{
+        Gatsby,
+        Alex,
+        Kapelusznik,
+        Wykladowca,
+        Nauczyciel,
+        Student,
+        Piotr,
+        Tomasz,
+        Diabeł,
+        Smok,
+        Las,
+        Kowal;
+
+        static public Rzeczowniki random(){
+            Random generator = new Random();
+            int index = generator.nextInt(Rzeczowniki.values().length);
+
+            return Rzeczowniki.values()[index];
+        }
     }
 }
