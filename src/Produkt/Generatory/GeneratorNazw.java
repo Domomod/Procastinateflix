@@ -35,21 +35,21 @@ public class GeneratorNazw {
         }
     }
 
-    private enum Rzeczowniki{
-        Gatsby,
+    private enum Rzeczowniki {
         Alex,
-        Kapelusznik,
-        Wykladowca,
-        Nauczyciel,
-        Student,
-        Piotr,
-        Tomasz,
         Diabeł,
-        Smok,
+        Gatsby,
+        Kapelusznik,
+        Kowal,
         Las,
-        Kowal;
+        Nauczyciel,
+        Piotr,
+        Smok,
+        Student,
+        Tomasz,
+        Wykladowca;
 
-        static public Rzeczowniki random(){
+        static public Rzeczowniki random() {
             Random generator = new Random();
             int index = generator.nextInt(Rzeczowniki.values().length);
 

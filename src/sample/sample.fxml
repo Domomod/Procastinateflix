@@ -16,6 +16,7 @@
       <VBox prefHeight="355.0" prefWidth="101.0" BorderPane.alignment="CENTER">
          <children>
             <ListView fx:id="listaProduktow" prefHeight="200.0" prefWidth="26.0" />
+            <Button fx:id="testujDystrybutoraButton" mnemonicParsing="false" onAction="#testujDystrybutoraButton" text="Dystrybutor" />
          </children>
       </VBox>
    </left>

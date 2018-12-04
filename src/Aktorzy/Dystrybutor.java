@@ -3,7 +3,17 @@ package Aktorzy;
 import Produkt.Generatory.GeneratorNazw;
 import Produkt.Produkt;
 import Produkt.Film;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import sample.Main;
 
+import java.awt.*;
+import java.io.IOException;
 import java.net.URL;
 import java.time.Duration;
 import java.util.Date;
@@ -14,8 +24,13 @@ public class Dystrybutor {
     private String nazwa;
     private KontoBankowe kontoBankowe;
 
-    public void zaproponujUmowe(){
 
+    public void zaproponujUmowe() {
+        try {
+            Main.noweOknoPropozycji();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public Produkt wydajProdukt(){

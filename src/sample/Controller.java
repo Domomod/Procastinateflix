@@ -1,5 +1,6 @@
 package sample;
 
+import Aktorzy.Dystrybutor;
 import Produkt.Produkt;
 
 import javafx.beans.property.ListProperty;
@@ -29,8 +30,17 @@ public class Controller implements Initializable {
     private ListView listaProduktow = new ListView();
     private ListProperty<Produkt> listProperty = new SimpleListProperty<>();
 
+    //ToDo tymczasowe, do usuniecia
+    @FXML
+    private Button testujDystrybutoraButton;
+
     public Controller(){
 
+    }
+
+    public void testujDystrybutoraButton(){
+        Dystrybutor dystrybutor = new Dystrybutor();
+        dystrybutor.zaproponujUmowe();
     }
 
     public void wyswietlProdukt( Produkt produkt ){
