@@ -1,5 +1,6 @@
 package sample;
 
+import Aktorzy.Dystrybutor;
 import Produkt.Generatory.GeneratorNazw;
 import Produkt.Produkt;
 import Produkt.Film;
@@ -32,28 +33,10 @@ public class Main extends Application {
         primaryStage.setScene( new Scene( root, wymiaryMonitora.getWidth(), wymiaryMonitora.getHeight() ) );
         primaryStage.show();
 
-        Duration czasTrwania = Duration.ZERO;
-        czasTrwania.plusHours( 1 );
-        czasTrwania.plusMinutes( 45 );
-        Set<String> aktorzy = new TreeSet<>();
-        aktorzy.add("Jacek Piotrowiak");
-        aktorzy.add("MaFXMLciek Borowiak");
-        aktorzy.add("Bolesław Chrobry");
-        Set<URL> linkiDoZwiastunow = new TreeSet<>();
+        Dystrybutor dystrybutor = new Dystrybutor();
 
-        Produkt przykladowyProdukt = new Film(GeneratorNazw.wygenerujNazwe(), "Serial wyprodukowany przez blahblah blah Wysokie oceny, wysoka jakość, blah blah blah blah, Wspaniała gra aktorska blah blah blah blahblah.",
-                new Date(2018,6,27), czasTrwania, "Polska", aktorzy, linkiDoZwiastunow, "Akcji"  );
-        Produkt przykladowyProdukt1 = new Film(GeneratorNazw.wygenerujNazwe(), "Serial wyprodukowany przez blahblah blah Wysokie oceny, wysoka jakość, blah blah blah blah, Wspaniała gra aktorska blah blah blah blahblah.",
-                new Date(2018,6,27), czasTrwania, "Polska", aktorzy, linkiDoZwiastunow, "Akcji"  );
-        Produkt przykladowyProdukt2 = new Film(GeneratorNazw.wygenerujNazwe(), "Serial wyprodukowany przez blahblah blah Wysokie oceny, wysoka jakość, blah blah blah blah, Wspaniała gra aktorska blah blah blah blahblah.",
-                new Date(2018,6,27), czasTrwania, "Polska", aktorzy, linkiDoZwiastunow, "Akcji"  );
-        Produkt przykladowyProdukt3 = new Film(GeneratorNazw.wygenerujNazwe(), "Serial wyprodukowany przez blahblah blah Wysokie oceny, wysoka jakość, blah blah blah blah, Wspaniała gra aktorska blah blah blah blahblah.",
-                new Date(2018,6,27), czasTrwania, "Polska", aktorzy, linkiDoZwiastunow, "Akcji"  );
-
-        produkty.add(przykladowyProdukt);
-        produkty.add(przykladowyProdukt1);
-        produkty.add(przykladowyProdukt2);
-        produkty.add(przykladowyProdukt3);
+        for(int i = 0; i < 10; i++)gi
+            produkty.add(dystrybutor.wydajProdukt());
     }
 
     public static void main(String[] args) {
