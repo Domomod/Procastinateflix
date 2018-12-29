@@ -13,6 +13,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.*;
@@ -30,6 +31,11 @@ public class Controller implements Initializable {
     private ListView listaProduktow = new ListView();
     private ListProperty<Produkt> listProperty = new SimpleListProperty<>();
 
+    @FXML
+    private Button przyjmijOferteButton;
+    @FXML
+    private Button odrzucOferteButton;
+
     //ToDo tymczasowe, do usuniecia
     @FXML
     private Button testujDystrybutoraButton;
@@ -41,6 +47,15 @@ public class Controller implements Initializable {
     public void testujDystrybutoraButton(){
         Dystrybutor dystrybutor = new Dystrybutor();
         dystrybutor.zaproponujUmowe();
+    }
+
+    public void przyjmijOferte(){
+        // Stage stage = (Stage) przyjmijOferteButton.getScene().getWindow();
+        // stage.close();
+    }
+
+    public void odrzucOferte(){
+        // Stage stage = (Stage) odrzucOferteButton.getScene().getWindow();
     }
 
     public void wyswietlProdukt( Produkt produkt ){

@@ -26,11 +26,7 @@ public class Dystrybutor {
 
 
     public void zaproponujUmowe() {
-        try {
-            Main.noweOknoPropozycji();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Main.dodajPotencjalnyFilm(wydajProdukt());
     }
 
     public Produkt wydajProdukt(){

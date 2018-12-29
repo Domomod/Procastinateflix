@@ -1,9 +1,7 @@
 package sample;
 
 import Aktorzy.Dystrybutor;
-import Produkt.Generatory.GeneratorNazw;
 import Produkt.Produkt;
-import Produkt.Film;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,16 +16,13 @@ import javafx.stage.Stage;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.IOException;
-import java.net.URL;
-import java.time.Duration;
-import java.util.*;
-
-import sample.Controller;
-
+import java.util.Map;
+import java.util.LinkedHashMap;
 
 public class Main extends Application {
 
-    
+
+    static private Map<Produkt, Stage> potencjalneProdukty = new LinkedHashMap<>();
     static private ObservableList<Produkt> produkty = FXCollections.observableArrayList();
     static private Scene scenaGlowna;
     static private Scene scenaPropozycji;
@@ -39,22 +34,23 @@ public class Main extends Application {
         zaladujScenePropozyjci();
         noweOknoGlowne(oknoGlowne);
         dodajFilmy();
-
-
+        rozpatrzPotencjalneFilmy();
     }
 
     
     private  void noweOknoGlowne(Stage oknoGlowne ) throws IOException {
         oknoGlowne.setTitle("Hello World");
         oknoGlowne.setScene(scenaGlowna);
-        oknoGlowne.show();
+        wyswietlOknoPropozycji(oknoGlowne);
     }
+
 
     private void zaladujSceneGlowna() throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         Dimension wymiaryMonitora = Toolkit.getDefaultToolkit().getScreenSize();
         scenaGlowna = new Scene( root, wymiaryMonitora.getWidth(), wymiaryMonitora.getHeight() );
     }
+
     
     private void zaladujScenePropozyjci() throws Exception{
         int szerokosc = 800;
@@ -64,22 +60,48 @@ public class Main extends Application {
     }
 
     
-    static public void noweOknoPropozycji() throws IOException {
+    static private Stage noweOknoPropozycji()  {
         VBox dialogVbox = new VBox(20);
-        Scene dialogScene = new Scene(dialogVbox, 300, 200);
-
         final Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialogVbox.getChildren().add(new Text("This is a Dialog"));
-        dialog.setScene( scenaPropozycji );
+        dialog.setScene(scenaPropozycji);
+
+        return dialog;
+    }
+
+    private static void wyswietlOknoPropozycji(Stage dialog) {
         dialog.show();
     }
 
-    
-    private void dodajFilmy(){
+    static synchronized public void dodajPotencjalnyFilm(Produkt produkt) {
+        Stage oknoPropozycji = noweOknoPropozycji();
+        potencjalneProdukty.put(produkt, oknoPropozycji);
+    }
+
+    synchronized private void rozpatrzPotencjalneFilmy() {
+        for(Map.Entry<Produkt, Stage> pozycja : potencjalneProdukty.entrySet()){
+            wyswietlOknoPropozycji(pozycja.getValue());
+            czekajNaOdpowiedz();
+        }
+    }
+
+    synchronized public void czekajNaOdpowiedz(){
+
+    }
+
+    synchronized public void przyjetoPropozycje(){
+    }
+
+    synchronized public void odrzuconoPropozycje(){
+    }
+
+    private void dodajFilmy() {
         Dystrybutor dystrybutor = new Dystrybutor();
         for(int i = 0; i < 10; i++)
             produkty.add(dystrybutor.wydajProdukt());
+        for(int i = 0; i < 2; i++)
+            dodajPotencjalnyFilm(dystrybutor.wydajProdukt());
     }
     
     

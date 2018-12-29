@@ -3,9 +3,12 @@
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.image.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
     <center>
@@ -53,8 +56,8 @@
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Czy przyjmujesz taka oferte?" />
                   <HBox>
                      <children>
-                        <Button fx:id="przyjmijProduktButton" mnemonicParsing="false" text="Przyjmij" />
-                        <Button fx:id="odrzucProduktButton" mnemonicParsing="false" text="Odrzuć" />
+                        <Button id="przyjmijOferteButton" fx:id="przyjmijProduktButton" mnemonicParsing="false" onAction="#przyjmijOferte" text="Przyjmij" />
+                        <Button id="odrzucOferteButton" fx:id="odrzucProduktButton" mnemonicParsing="false" onAction="#odrzucOferte" text="Odrzuć" />
                      </children>
                   </HBox>
                </children>
