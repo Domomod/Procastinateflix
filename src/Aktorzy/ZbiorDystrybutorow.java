@@ -11,19 +11,19 @@ import java.util.Random;
 public class ZbiorDystrybutorow extends Thread{
     static private ObservableList<Dystrybutor> dystrybutorzy = FXCollections.observableArrayList();
     static private Random rand = new Random();
-    static private boolean endAllthread = false;
+    static private volatile boolean endAllthread = false;
     static private int gorneOgraniczenie = 15;
 
     public void run(){
         while(!endAllthread){
 
-            if(rand.nextInt(20)<2 && dystrybutorzy.size() < 5) {
+            if(rand.nextInt(100)<2 && dystrybutorzy.size() < 5) {
                 dodajDystrybutora();
             }
 
 
             try {
-                sleep(600);
+                sleep(1800);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -49,7 +49,8 @@ public class ZbiorDystrybutorow extends Thread{
         Dystrybutor nowyDystrybutor = new Dystrybutor();
         dystrybutorzy.add(nowyDystrybutor);
         nowyDystrybutorWiadomosc();
-        //nowyDystrybutor.run();
+        Thread newThread = new Thread(nowyDystrybutor);
+        newThread.start();
     }
 
     synchronized static public Dystrybutor wylosujDystrybutora(){

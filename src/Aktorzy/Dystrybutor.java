@@ -26,7 +26,7 @@ import static java.lang.Thread.sleep;
 public class Dystrybutor implements Runnable{
     private String nazwa;
     private KontoBankowe kontoBankowe;
-    private static boolean endAllThreads = false;
+    private static volatile boolean endAllThreads = false;
     private static Random rand = new Random();
 
     public void zaproponujUmowe() {
@@ -55,17 +55,14 @@ public class Dystrybutor implements Runnable{
     @Override
     public void run() {
         while(!endAllThreads) {
-
-            synchronized (this.getClass()) {
-                if (rand.nextInt(50) < 2) {
-                    //zaproponujUmowe();
-                }
-            }
-
             try {
-                sleep(600);
+                sleep(1800);
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            }
+            synchronized (rand){
+                if(rand.nextInt(200)<2)
+                    zaproponujUmowe();
             }
         }
     }

@@ -4,6 +4,7 @@ import Aktorzy.Dystrybutor;
 import Aktorzy.ZbiorDystrybutorow;
 import Produkt.Produkt;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -22,6 +23,7 @@ import java.awt.Toolkit;
 import java.io.IOException;
 import java.util.Map;
 import java.util.LinkedHashMap;
+import java.util.concurrent.Semaphore;
 
 public class Main extends Application {
 
@@ -30,7 +32,7 @@ public class Main extends Application {
     static private ObservableList<Produkt> produkty = FXCollections.observableArrayList();
     static private Scene scenaGlowna;
     static private Scene scenaPropozycji;
-
+    static Semaphore semaforPropozycji = new Semaphore(1);
     
     @Override
     public void start(Stage oknoGlowne) throws Exception{
@@ -77,10 +79,20 @@ public class Main extends Application {
         dialog.show();
     }
 
-    static synchronized public void dodajPotencjalnyFilm(Produkt produkt) {
-        Stage oknoPropozycji = noweOknoPropozycji();
-        potencjalneProdukty.put(oknoPropozycji, produkt);
-        //wyswietlOknoPropozycji(oknoPropozycji);
+    static public void dodajPotencjalnyFilm(Produkt produkt) {
+        try {
+            semaforPropozycji.acquire();
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    Stage oknoPropozycji = noweOknoPropozycji();
+                    potencjalneProdukty.put(oknoPropozycji, produkt);
+                    wyswietlOknoPropozycji(oknoPropozycji);
+                }
+            });
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     synchronized private void rozpatrzPotencjalneFilmy() {
@@ -91,13 +103,15 @@ public class Main extends Application {
         }
     }
 
-    static synchronized public void przyjetoPropozycje(Stage oknoPropozycji){
+    static public void przyjetoPropozycje(Stage oknoPropozycji){
         produkty.add( potencjalneProdukty.get(oknoPropozycji) );
         potencjalneProdukty.remove(oknoPropozycji);
+        semaforPropozycji.release();
     }
 
-    static synchronized public void odrzuconoPropozycje(Stage oknoPropozycji){
+    static public void odrzuconoPropozycje(Stage oknoPropozycji){
         potencjalneProdukty.remove(oknoPropozycji);
+        semaforPropozycji.release();
     }
 
     private void dodajFilmy() {
@@ -105,7 +119,8 @@ public class Main extends Application {
     
     
     public static void main(String[] args) {
-        (new ZbiorDystrybutorow()).start();
+        Thread watekDystrybutorow = new Thread(new ZbiorDystrybutorow());
+        watekDystrybutorow.start();
         launch(args);
     }
 
