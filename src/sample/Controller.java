@@ -32,16 +32,21 @@ public class Controller implements Initializable {
     private ListProperty<Produkt> listProperty = new SimpleListProperty<>();
 
     @FXML
-    private Button przyjmijOferteButton;
+    private Button przyjmijProduktButton;
     @FXML
-    private Button odrzucOferteButton;
+    private Button odrzucProduktButton;
 
     //ToDo tymczasowe, do usuniecia
     @FXML
     private Button testujDystrybutoraButton;
+    private Button nowyDystrybutorButton;
 
     public Controller(){
 
+    }
+
+    public void nowyDystrybutorButton() {
+        Dystrybutor dystrybutor = new Dystrybutor();
     }
 
     public void testujDystrybutoraButton(){
@@ -50,12 +55,15 @@ public class Controller implements Initializable {
     }
 
     public void przyjmijOferte(){
-        // Stage stage = (Stage) przyjmijOferteButton.getScene().getWindow();
-        // stage.close();
+         Stage stage = (Stage) przyjmijProduktButton.getScene().getWindow();
+         Main.przyjetoPropozycje(stage);
+         stage.close();
     }
 
     public void odrzucOferte(){
-        // Stage stage = (Stage) odrzucOferteButton.getScene().getWindow();
+         Stage stage = (Stage) odrzucProduktButton.getScene().getWindow();
+         Main.odrzuconoPropozycje(stage);
+         stage.close();
     }
 
     public void wyswietlProdukt( Produkt produkt ){

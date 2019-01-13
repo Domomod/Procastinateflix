@@ -5,6 +5,7 @@ import Produkt.Produkt;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -12,6 +13,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -22,7 +25,7 @@ import java.util.LinkedHashMap;
 public class Main extends Application {
 
 
-    static private Map<Produkt, Stage> potencjalneProdukty = new LinkedHashMap<>();
+    static private Map<Stage, Produkt> potencjalneProdukty = new LinkedHashMap<>();
     static private ObservableList<Produkt> produkty = FXCollections.observableArrayList();
     static private Scene scenaGlowna;
     static private Scene scenaPropozycji;
@@ -34,7 +37,6 @@ public class Main extends Application {
         zaladujScenePropozyjci();
         noweOknoGlowne(oknoGlowne);
         dodajFilmy();
-        rozpatrzPotencjalneFilmy();
     }
 
     
@@ -71,37 +73,47 @@ public class Main extends Application {
     }
 
     private static void wyswietlOknoPropozycji(Stage dialog) {
+
         dialog.show();
     }
 
     static synchronized public void dodajPotencjalnyFilm(Produkt produkt) {
         Stage oknoPropozycji = noweOknoPropozycji();
-        potencjalneProdukty.put(produkt, oknoPropozycji);
+        potencjalneProdukty.put(oknoPropozycji, produkt);
+        wyswietlOknoPropozycji(oknoPropozycji);
     }
 
     synchronized private void rozpatrzPotencjalneFilmy() {
-        for(Map.Entry<Produkt, Stage> pozycja : potencjalneProdukty.entrySet()){
-            wyswietlOknoPropozycji(pozycja.getValue());
-            czekajNaOdpowiedz();
+        for(Map.Entry<Stage, Produkt> pozycja : potencjalneProdukty.entrySet()){
+            Stage okno = pozycja.getKey();
+
+            wyswietlOknoPropozycji(pozycja.getKey());
         }
     }
 
-    synchronized public void czekajNaOdpowiedz(){
-
+    static synchronized public void przyjetoPropozycje(Stage oknoPropozycji){
+        produkty.add( potencjalneProdukty.get(oknoPropozycji) );
+        potencjalneProdukty.remove(oknoPropozycji);
     }
 
-    synchronized public void przyjetoPropozycje(){
+    static synchronized public void odrzuconoPropozycje(Stage oknoPropozycji){
+        potencjalneProdukty.remove(oknoPropozycji);
     }
 
-    synchronized public void odrzuconoPropozycje(){
+    static synchronized public boolean czyJestOknemPropozycji(Stage okno){
+        return potencjalneProdukty.containsKey(okno);
+    }
+
+    static synchronized public Produkt zwrocProponowanyProdukt(Stage oknoPropozycji){
+        return  potencjalneProdukty.get(oknoPropozycji);
     }
 
     private void dodajFilmy() {
         Dystrybutor dystrybutor = new Dystrybutor();
-        for(int i = 0; i < 10; i++)
+        for(int i = 0; i < 1; i++)
             produkty.add(dystrybutor.wydajProdukt());
-        for(int i = 0; i < 2; i++)
-            dodajPotencjalnyFilm(dystrybutor.wydajProdukt());
+        //for(int i = 0; i < 3; i++)
+        //    dodajPotencjalnyFilm(dystrybutor.wydajProdukt());
     }
     
     
