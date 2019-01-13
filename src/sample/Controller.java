@@ -1,6 +1,7 @@
 package sample;
 
 import Aktorzy.Dystrybutor;
+import Aktorzy.ZbiorDystrybutorow;
 import Produkt.Produkt;
 
 import javafx.beans.property.ListProperty;
@@ -46,12 +47,11 @@ public class Controller implements Initializable {
     }
 
     public void nowyDystrybutorButton() {
-        Dystrybutor dystrybutor = new Dystrybutor();
+        ZbiorDystrybutorow.dodajDystrybutora();
     }
 
     public void testujDystrybutoraButton(){
-        Dystrybutor dystrybutor = new Dystrybutor();
-        dystrybutor.zaproponujUmowe();
+        ZbiorDystrybutorow.wygenerujNowyProduktNaZlecenieUżytkownika();
     }
 
     public void przyjmijOferte(){

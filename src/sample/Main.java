@@ -1,6 +1,7 @@
 package sample;
 
 import Aktorzy.Dystrybutor;
+import Aktorzy.ZbiorDystrybutorow;
 import Produkt.Produkt;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -73,14 +74,13 @@ public class Main extends Application {
     }
 
     private static void wyswietlOknoPropozycji(Stage dialog) {
-
         dialog.show();
     }
 
     static synchronized public void dodajPotencjalnyFilm(Produkt produkt) {
         Stage oknoPropozycji = noweOknoPropozycji();
         potencjalneProdukty.put(oknoPropozycji, produkt);
-        wyswietlOknoPropozycji(oknoPropozycji);
+        //wyswietlOknoPropozycji(oknoPropozycji);
     }
 
     synchronized private void rozpatrzPotencjalneFilmy() {
@@ -100,24 +100,12 @@ public class Main extends Application {
         potencjalneProdukty.remove(oknoPropozycji);
     }
 
-    static synchronized public boolean czyJestOknemPropozycji(Stage okno){
-        return potencjalneProdukty.containsKey(okno);
-    }
-
-    static synchronized public Produkt zwrocProponowanyProdukt(Stage oknoPropozycji){
-        return  potencjalneProdukty.get(oknoPropozycji);
-    }
-
     private void dodajFilmy() {
-        Dystrybutor dystrybutor = new Dystrybutor();
-        for(int i = 0; i < 1; i++)
-            produkty.add(dystrybutor.wydajProdukt());
-        //for(int i = 0; i < 3; i++)
-        //    dodajPotencjalnyFilm(dystrybutor.wydajProdukt());
     }
     
     
     public static void main(String[] args) {
+        (new ZbiorDystrybutorow()).start();
         launch(args);
     }
 
