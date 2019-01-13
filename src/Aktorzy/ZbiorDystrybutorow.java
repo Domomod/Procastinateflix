@@ -9,10 +9,10 @@ import javafx.scene.control.ButtonType;
 import java.util.Random;
 
 public class ZbiorDystrybutorow extends Thread{
-    static private ObservableList<Dystrybutor> dystrybutorzy = FXCollections.observableArrayList();
-    static private Random rand = new Random();
-    static private volatile boolean endAllthread = false;
-    static private int gorneOgraniczenie = 15;
+    private ObservableList<Dystrybutor> dystrybutorzy = FXCollections.observableArrayList();
+    private Random rand = new Random();
+    private volatile boolean endAllthread = false;
+    private int gorneOgraniczenie = 15;
 
     public void run(){
         while(!endAllthread){
@@ -30,7 +30,7 @@ public class ZbiorDystrybutorow extends Thread{
         }
     }
 
-    static private void nowyDystrybutorWiadomosc() {
+    private void nowyDystrybutorWiadomosc() {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -41,11 +41,11 @@ public class ZbiorDystrybutorow extends Thread{
         });
     }
 
-    static public void endAllThreadsInNexCycle(){
+    public void endAllThreadsInNexCycle(){
         endAllthread = true;
     }
 
-    synchronized static public void dodajDystrybutora(){
+    public void dodajDystrybutora(){
         Dystrybutor nowyDystrybutor = new Dystrybutor();
         dystrybutorzy.add(nowyDystrybutor);
         nowyDystrybutorWiadomosc();
@@ -53,12 +53,12 @@ public class ZbiorDystrybutorow extends Thread{
         newThread.start();
     }
 
-    synchronized static public Dystrybutor wylosujDystrybutora(){
+    public Dystrybutor wylosujDystrybutora(){
 
         return dystrybutorzy.get(rand.nextInt(dystrybutorzy.size()));
     }
 
-    synchronized static public void wygenerujNowyProduktNaZlecenieUżytkownika(){
+    public void wygenerujNowyProduktNaZlecenieUżytkownika(){
 
         if(dystrybutorzy.isEmpty()){
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "Czy chcesz rozpozcac negocjacje z kims nowym?", ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);

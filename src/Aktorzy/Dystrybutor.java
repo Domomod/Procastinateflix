@@ -3,23 +3,23 @@ package Aktorzy;
 import Produkt.Generatory.GeneratorNazw;
 import Produkt.Produkt;
 import Produkt.Film;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sample.Main;
 
-import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.time.Duration;
-import java.util.Date;
-import java.util.Random;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 import static java.lang.Thread.sleep;
 
@@ -27,10 +27,31 @@ public class Dystrybutor implements Runnable{
     private String nazwa;
     private KontoBankowe kontoBankowe;
     private static volatile boolean endAllThreads = false;
-    private static Random rand = new Random();
+    private static final Random rand = new Random();
+    private List<Produkt> udostepnianeProdukty = new ArrayList<>();
+
 
     public void zaproponujUmowe() {
-        Main.dodajPotencjalnyFilm(wydajProdukt());
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+
+                Produkt nowyProdukt = wydajProdukt();
+                Umowa nowaUmowa = new Umowa(nowyProdukt);
+
+                String opisWiadomości = nowyProdukt.getClass().getSimpleName() + ": " + nowyProdukt.getNazwa() + ", jakosc: " + nowyProdukt.getJakosc() + " za jedyne " + nowaUmowa.getRyczalt() + " zł miesięcznie. ";
+                Alert alert = new Alert(Alert.AlertType.NONE, opisWiadomości, ButtonType.YES, ButtonType.NO);
+                alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+                alert.setTitle( "Firma "+ nazwa +" chce podpisac nową umowę");
+                alert.showAndWait();
+
+                if (alert.getResult() == ButtonType.YES) {
+                    Main.dodajProdukt(nowyProdukt, nowaUmowa);
+                    udostepnianeProdukty.add(nowyProdukt);
+                }
+            }
+        });
     }
 
     private Produkt wydajProdukt(){

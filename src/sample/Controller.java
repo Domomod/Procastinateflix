@@ -47,23 +47,11 @@ public class Controller implements Initializable {
     }
 
     public void nowyDystrybutorButton() {
-        ZbiorDystrybutorow.dodajDystrybutora();
+        Main.getDystrybutorzy().dodajDystrybutora();
     }
 
     public void testujDystrybutoraButton(){
-        ZbiorDystrybutorow.wygenerujNowyProduktNaZlecenieUżytkownika();
-    }
-
-    public void przyjmijOferte(){
-         Stage stage = (Stage) przyjmijProduktButton.getScene().getWindow();
-         Main.przyjetoPropozycje(stage);
-         stage.close();
-    }
-
-    public void odrzucOferte(){
-         Stage stage = (Stage) odrzucProduktButton.getScene().getWindow();
-         Main.odrzuconoPropozycje(stage);
-         stage.close();
+        Main.getDystrybutorzy().wygenerujNowyProduktNaZlecenieUżytkownika();
     }
 
     public void wyswietlProdukt( Produkt produkt ){
