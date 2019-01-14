@@ -5,19 +5,11 @@ import Produkt.Generatory.GeneratorNazw;
 import Produkt.Produkt;
 import Produkt.Film;
 import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import sample.Main;
 
-import java.io.IOException;
 import java.net.URL;
 import java.time.Duration;
 import java.util.*;
@@ -26,7 +18,7 @@ import static java.lang.Thread.sleep;
 
 public class Dystrybutor implements Runnable{
     private String nazwa;
-    private KontoBankowe kontoBankowe;
+    private KontoBankowe kontoBankowe = new KontoBankowe();
     private static volatile boolean endAllThreads = false;
     private static final Random rand = new Random();
     private List<Produkt> udostepnianeProdukty = new ArrayList<>();
@@ -36,13 +28,17 @@ public class Dystrybutor implements Runnable{
     }
 
     public void zaproponujUmowe() {
-
+        Dystrybutor dystrybutor = this;
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
 
                 Produkt nowyProdukt = wydajProdukt();
-                Umowa nowaUmowa = new Umowa(nowyProdukt);
+
+                int jakoscProduktu = nowyProdukt.getJakosc();
+                int ryczalt = jakoscProduktu * 100 + rand.nextInt(jakoscProduktu * 50);
+
+                Umowa nowaUmowa = new Umowa(ryczalt, Main.getGracz().getKontoBankowe(), dystrybutor.getKontoBankowe());
 
                 String opisWiadomości = nowyProdukt.getClass().getSimpleName() + ": " + nowyProdukt.getNazwa() + ", jakosc: " + nowyProdukt.getJakosc() + " za jedyne " + nowaUmowa.getRyczalt() + " zł miesięcznie. ";
                 Alert alert = new Alert(Alert.AlertType.NONE, opisWiadomości, ButtonType.YES, ButtonType.NO);
@@ -94,5 +90,9 @@ public class Dystrybutor implements Runnable{
 
     public String getNazwa() {
         return nazwa;
+    }
+
+    public KontoBankowe getKontoBankowe() {
+        return kontoBankowe;
     }
 }

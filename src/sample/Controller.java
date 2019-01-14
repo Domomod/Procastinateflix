@@ -1,6 +1,7 @@
 package sample;
 
 import Aktorzy.Dystrybutor;
+import Aktorzy.Symulacja;
 import Aktorzy.WlascicielSerwisu;
 import Produkt.Produkt;
 
@@ -77,6 +78,8 @@ public class Controller implements Initializable {
         listaDystrybutorowProperty.set(Main.getDystrybutorzy().getDystrybutorzy());
 
         wyswietlGracza(Main.getGracz());
+
+        Symulacja.kontroler = this;
 
         /*Ustalam w jaki sposob ma sie wyswietlac Produkt na Liscie, uzywam CellFactory, zeby nie musiec
         * powiazywac metody toString z wyswietlaniem w GUI, Java nie pozwala mi użyć wildcarda, nie wiem jak uniknąć powielenia kodu*/

@@ -17,8 +17,13 @@ public class ZbiorDystrybutorow extends Thread{
     public void run(){
         while(!endAllthread){
 
-            if(rand.nextInt(100)<2 && dystrybutorzy.size() < 5) {
-                dodajDystrybutora();
+            if(rand.nextInt(100)<2 && dystrybutorzy.size() < gorneOgraniczenie) {
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        dodajDystrybutora();
+                    }
+                });
             }
 
 
