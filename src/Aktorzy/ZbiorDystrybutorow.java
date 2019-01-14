@@ -73,4 +73,8 @@ public class ZbiorDystrybutorow extends Thread{
         Dystrybutor dystrybutor = dystrybutorzy.get(rand.nextInt(dystrybutorzy.size()));
         dystrybutor.zaproponujUmowe();
     }
+
+    public ObservableList<Dystrybutor> getDystrybutorzy() {
+        return dystrybutorzy;
+    }
 }

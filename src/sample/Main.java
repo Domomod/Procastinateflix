@@ -2,6 +2,7 @@ package sample;
 
 import Aktorzy.Dystrybutor;
 import Aktorzy.Umowa;
+import Aktorzy.WlascicielSerwisu;
 import Aktorzy.ZbiorDystrybutorow;
 import Produkt.Produkt;
 import javafx.application.Application;
@@ -29,6 +30,7 @@ import java.util.concurrent.Semaphore;
 
 public class Main extends Application {
 
+    static private WlascicielSerwisu gracz = new WlascicielSerwisu();
     static private Map<Produkt, Umowa> umowy = new LinkedHashMap<>();
     static private ObservableList<Produkt> produkty = FXCollections.observableArrayList();
     static private Scene scenaGlowna;
@@ -72,5 +74,9 @@ public class Main extends Application {
 
     public static ZbiorDystrybutorow getDystrybutorzy() {
         return dystrybutorzy;
+    }
+
+    public static WlascicielSerwisu getGracz() {
+        return gracz;
     }
 }

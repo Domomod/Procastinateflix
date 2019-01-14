@@ -1,7 +1,7 @@
 package sample;
 
 import Aktorzy.Dystrybutor;
-import Aktorzy.ZbiorDystrybutorow;
+import Aktorzy.WlascicielSerwisu;
 import Produkt.Produkt;
 
 import javafx.beans.property.ListProperty;
@@ -14,7 +14,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.*;
@@ -25,22 +24,26 @@ public class Controller implements Initializable {
     @FXML
     private Text nazwaProduktu;
     @FXML
+    private Text stanKonta;
+    @FXML
+    private Text wydatki;
+    @FXML
+    private Text zarobki;
+    @FXML
+    private Text popularnosc;
+    @FXML
     private ImageView zdjecieProduktu;
     @FXML
     private TextArea opisProduktu;
     @FXML
-    private ListView listaProduktow = new ListView();
-    private ListProperty<Produkt> listProperty = new SimpleListProperty<>();
-
+    volatile private ListView listaProduktow = new ListView();
+    volatile private ListProperty<Produkt> listaProduktowProperty = new SimpleListProperty<>();
     @FXML
-    private Button przyjmijProduktButton;
+    volatile private ListView listaDystrybutorow = new ListView();
+    volatile private ListProperty<Dystrybutor> listaDystrybutorowProperty = new SimpleListProperty<>();
     @FXML
-    private Button odrzucProduktButton;
-
-    //ToDo tymczasowe, do usuniecia
-    @FXML
-    private Button testujDystrybutoraButton;
-    private Button nowyDystrybutorButton;
+    volatile private ListView listaKlientow = new ListView();
+    volatile private ListProperty<Produkt> listaKlientowProperty = new SimpleListProperty<>();
 
     public Controller(){
 
@@ -60,14 +63,23 @@ public class Controller implements Initializable {
         opisProduktu.setText( produkt.getOpis() );
     }
 
+    public void wyswietlGracza(WlascicielSerwisu gracz){
+        stanKonta.setText( gracz.getKontoBankowe().getStanKonta().toString() );
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        listaProduktow.itemsProperty().bind(listProperty);
-        listProperty.set(Main.getProdukty());
+        listaProduktow.itemsProperty().bind(listaProduktowProperty);
+        listaProduktowProperty.set(Main.getProdukty());
+
+        listaDystrybutorow.itemsProperty().bind(listaDystrybutorowProperty);
+        listaDystrybutorowProperty.set(Main.getDystrybutorzy().getDystrybutorzy());
+
+        wyswietlGracza(Main.getGracz());
 
         /*Ustalam w jaki sposob ma sie wyswietlac Produkt na Liscie, uzywam CellFactory, zeby nie musiec
-        * powiazywac metody toString z wyswietlaniem w GUI*/
+        * powiazywac metody toString z wyswietlaniem w GUI, Java nie pozwala mi użyć wildcarda, nie wiem jak uniknąć powielenia kodu*/
         listaProduktow.setCellFactory(param -> new ListCell<Produkt>() {
             @Override
             protected void updateItem(Produkt item, boolean empty) {
@@ -78,6 +90,23 @@ public class Controller implements Initializable {
                 } else {
                     Text text = new Text();
                     text.wrappingWidthProperty().bind(listaProduktow.widthProperty().subtract(15));
+                    text.setText(item.getNazwa());
+
+                    setPrefWidth(0);
+                    setGraphic(text);
+                }
+            }
+        });
+        listaDystrybutorow.setCellFactory(param -> new ListCell<Dystrybutor>() {
+            @Override
+            protected void updateItem(Dystrybutor item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null || item.getNazwa() == null) {
+                    setText(null);
+                } else {
+                    Text text = new Text();
+                    text.wrappingWidthProperty().bind(listaDystrybutorow.widthProperty().subtract(15));
                     text.setText(item.getNazwa());
 
                     setPrefWidth(0);

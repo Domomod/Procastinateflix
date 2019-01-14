@@ -1,5 +1,6 @@
 package Aktorzy;
 
+import Produkt.Generatory.GeneratorFirmowychNazw;
 import Produkt.Generatory.GeneratorNazw;
 import Produkt.Produkt;
 import Produkt.Film;
@@ -30,6 +31,9 @@ public class Dystrybutor implements Runnable{
     private static final Random rand = new Random();
     private List<Produkt> udostepnianeProdukty = new ArrayList<>();
 
+    public Dystrybutor() {
+        this.nazwa = GeneratorFirmowychNazw.wygenerujNazwe();
+    }
 
     public void zaproponujUmowe() {
 
@@ -86,5 +90,9 @@ public class Dystrybutor implements Runnable{
                     zaproponujUmowe();
             }
         }
+    }
+
+    public String getNazwa() {
+        return nazwa;
     }
 }
