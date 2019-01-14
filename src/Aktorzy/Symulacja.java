@@ -49,6 +49,8 @@ public class Symulacja implements Runnable {
         System.out.print(gracz.getKontoBankowe().getStanKonta());
     }
 
+    public Produkt getLosowyProdukt() { return produkty.get( (int) (Math.random() * produkty.size()) );}
+
     public ObservableList<Produkt> getProdukty() {
         return produkty;
     }

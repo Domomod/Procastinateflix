@@ -11,6 +11,8 @@ public class Produkt {
     private Date dataProdukcji;
     private Duration czasTrwania;
     private int jakosc;
+    static private int maksymalnaJakosc;
+    private int cena = 10;
     //To Do: Dystrybutor
     private String krajProdukcji;
 
@@ -56,5 +58,17 @@ public class Produkt {
 
     public int getJakosc() {
         return jakosc;
+    }
+
+    public int getCena() {
+        return cena;
+    }
+
+    public void setCena(int cena) {
+        this.cena = cena;
+    }
+
+    public static int getMaksymalnaJakosc() {
+        return maksymalnaJakosc;
     }
 }

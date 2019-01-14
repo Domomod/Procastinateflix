@@ -4,8 +4,8 @@ import com.sun.javaws.exceptions.InvalidArgumentException;
 
 public class KontoBankowe {
     static Integer nastepnyNumer = 0;
-    public Integer numerKonta;
-    public Integer stanKonta;
+    private Integer numerKonta;
+    private Integer stanKonta;
 
     public KontoBankowe() {
         synchronized (this.getClass()){

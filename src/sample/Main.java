@@ -23,16 +23,11 @@ public class Main extends Application {
         zaladujSceneGlowna();
         noweOknoGlowne(oknoGlowne);
     }
-
     
     private  void noweOknoGlowne(Stage oknoGlowne ) throws IOException {
         oknoGlowne.setTitle("Hello World");
         oknoGlowne.setScene(scenaGlowna);
         oknoGlowne.show();
-    }
-
-    static public void dodajProdukt(Produkt produkt, Umowa umowa){
-        symulacja.dodajProdukt(produkt, umowa);
     }
 
     private void zaladujSceneGlowna() throws Exception{
@@ -47,6 +42,12 @@ public class Main extends Application {
         launch(args);
     }
 
+
+    static public void dodajProdukt(Produkt produkt, Umowa umowa){
+        symulacja.dodajProdukt(produkt, umowa);
+    }
+
+    public static Produkt getLosowyProdukt() {return symulacja.getLosowyProdukt(); }
     
     public static ObservableList<Produkt> getProdukty(){
         return symulacja.getProdukty();
