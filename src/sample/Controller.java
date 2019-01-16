@@ -46,7 +46,7 @@ public class Controller implements Initializable {
     volatile private ListView listaKlientow = new ListView();
     volatile private ListProperty<Produkt> listaKlientowProperty = new SimpleListProperty<>();
 
-    public Controller(){
+    public Controller() {
 
     }
 
@@ -54,18 +54,18 @@ public class Controller implements Initializable {
         Main.getDystrybutorzy().dodajDystrybutora();
     }
 
-    public void testujDystrybutoraButton(){
+    public void testujDystrybutoraButton() {
         Main.getDystrybutorzy().wygenerujNowyProduktNaZlecenieUżytkownika();
     }
 
-    public void wyswietlProdukt( Produkt produkt ){
-        nazwaProduktu.setText( produkt.getNazwa() );
+    public void wyswietlProdukt(Produkt produkt) {
+        nazwaProduktu.setText(produkt.getNazwa());
         //ToDo zmieniac zdjecie produktu;
-        opisProduktu.setText( produkt.getOpis() );
+        opisProduktu.setText(produkt.getOpis());
     }
 
-    public void wyswietlGracza(WlascicielSerwisu gracz){
-        stanKonta.setText( gracz.getKontoBankowe().getStanKonta().toString() );
+    public void wyswietlGracza(WlascicielSerwisu gracz) {
+        stanKonta.setText(gracz.getKontoBankowe().getStanKonta().toString());
     }
 
     @Override
@@ -79,10 +79,14 @@ public class Controller implements Initializable {
 
         wyswietlGracza(Main.getGracz());
 
-        Symulacja.kontroler = this;
+        Symulacja.setOnChangeListener(e -> {
+            wyswietlGracza(e);
+        });
+
+        Symulacja.isControllerCreated = true;
 
         /*Ustalam w jaki sposob ma sie wyswietlac Produkt na Liscie, uzywam CellFactory, zeby nie musiec
-        * powiazywac metody toString z wyswietlaniem w GUI, Java nie pozwala mi użyć wildcarda, nie wiem jak uniknąć powielenia kodu*/
+         * powiazywac metody toString z wyswietlaniem w GUI, Java nie pozwala mi użyć wildcarda, nie wiem jak uniknąć powielenia kodu*/
         listaProduktow.setCellFactory(param -> new ListCell<Produkt>() {
             @Override
             protected void updateItem(Produkt item, boolean empty) {
@@ -119,7 +123,7 @@ public class Controller implements Initializable {
         });
 
         /*Ustalam co ma sie dziac przy wybraniu pozycji z listy, robie to poniewaz nie wiem czy da sie wybrac uchwyt takiej funkcji
-        * z poziomu SceneBuildera*/
+         * z poziomu SceneBuildera*/
         listaProduktow.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> {
                     wyswietlProdukt((Produkt) newValue);
