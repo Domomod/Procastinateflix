@@ -1,8 +1,6 @@
 package sample;
 
-import Aktorzy.Dystrybutor;
-import Aktorzy.Symulacja;
-import Aktorzy.WlascicielSerwisu;
+import Aktorzy.*;
 import Produkt.Produkt;
 
 import javafx.beans.property.ListProperty;
@@ -45,17 +43,20 @@ public class Controller implements Initializable {
     @FXML
     volatile private ListView listaKlientow = new ListView();
     volatile private ListProperty<Produkt> listaKlientowProperty = new SimpleListProperty<>();
+    @FXML
+    volatile private ListView listaUmow = new ListView();
+    volatile private ListProperty<Umowa> listaUmowProperty = new SimpleListProperty<>();
 
     public Controller() {
 
     }
 
     public void nowyDystrybutorButton() {
-        Main.getDystrybutorzy().dodajDystrybutora();
+        SimulationAPI.wygenerujNowegoDystrybutora();
     }
 
     public void testujDystrybutoraButton() {
-        Main.getDystrybutorzy().wygenerujNowyProduktNaZlecenieUżytkownika();
+        SimulationAPI.wygenerujNowyProdukt();
     }
 
     public void wyswietlProdukt(Produkt produkt) {
@@ -64,7 +65,7 @@ public class Controller implements Initializable {
         opisProduktu.setText(produkt.getOpis());
     }
 
-    public void wyswietlGracza(WlascicielSerwisu gracz) {
+    public void wyswietlWlasciciela(WlascicielSerwisu gracz) {
         stanKonta.setText(gracz.getKontoBankowe().getStanKonta().toString());
     }
 
@@ -72,20 +73,22 @@ public class Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         listaProduktow.itemsProperty().bind(listaProduktowProperty);
-        listaProduktowProperty.set(Main.getProdukty());
+        listaProduktowProperty.set(SimulationAPI.getProdukty());
 
         listaDystrybutorow.itemsProperty().bind(listaDystrybutorowProperty);
-        listaDystrybutorowProperty.set(Main.getDystrybutorzy().getDystrybutorzy());
+        listaDystrybutorowProperty.set(SimulationAPI.getDystrybutorzy());
 
-        wyswietlGracza(Main.getGracz());
+        listaUmow.itemsProperty().bind(listaUmowProperty);
+
+        wyswietlWlasciciela(SimulationAPI.getWlascicielSerwisu());
 
         Symulacja.setOnChangeListener(e -> {
-            wyswietlGracza(e);
+            wyswietlWlasciciela(e);
         });
 
         Symulacja.isControllerCreated = true;
 
-        /*Ustalam w jaki sposob ma sie wyswietlac Produkt na Liscie, uzywam CellFactory, zeby nie musiec
+        /*Ustalam w jaki sposob mają się wyświetlać pozycja na Liscie, uzywam CellFactory, zeby nie musiec
          * powiazywac metody toString z wyswietlaniem w GUI, Java nie pozwala mi użyć wildcarda, nie wiem jak uniknąć powielenia kodu*/
         listaProduktow.setCellFactory(param -> new ListCell<Produkt>() {
             @Override
@@ -104,6 +107,25 @@ public class Controller implements Initializable {
                 }
             }
         });
+
+        listaUmow.setCellFactory(param -> new ListCell<Produkt>() {
+            @Override
+            protected void updateItem(Produkt item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null || item.getNazwa() == null) {
+                    setText(null);
+                } else {
+                    Text text = new Text();
+                    text.wrappingWidthProperty().bind(listaUmow.widthProperty().subtract(15));
+                    text.setText(item.getNazwa());
+
+                    setPrefWidth(0);
+                    setGraphic(text);
+                }
+            }
+        });
+
         listaDystrybutorow.setCellFactory(param -> new ListCell<Dystrybutor>() {
             @Override
             protected void updateItem(Dystrybutor item, boolean empty) {

@@ -4,6 +4,7 @@ import Produkt.Produkt;
 import com.sun.javaws.exceptions.InvalidArgumentException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import sample.Controller;
 
 import java.util.LinkedHashMap;
@@ -12,9 +13,9 @@ import java.util.Map;
 import static java.lang.Thread.sleep;
 
 public class Symulacja implements Runnable {
-    static private WlascicielSerwisu gracz = new WlascicielSerwisu();
+    private WlascicielSerwisu wlascicielSerwisu = new WlascicielSerwisu();
     private ObservableList<Produkt> produkty = FXCollections.observableArrayList();
-    private Map<Produkt, Umowa> umowy = new LinkedHashMap<>();
+    private ObservableMap<Produkt, Umowa> umowy = FXCollections.observableHashMap();
     private ZbiorDystrybutorow dystrybutorzy = new ZbiorDystrybutorow();
     private boolean endThread = false;
     private static OnChangeListener onChangeListener;
@@ -37,25 +38,19 @@ public class Symulacja implements Runnable {
 
         while (true) {
             try {
-                sleep(360);
+                sleep(3600);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            /*
+
             for (Map.Entry<Produkt, Umowa> element : umowy.entrySet()) {
                 Umowa umowa = element.getValue();
                 umowa.wyegzekwuj();
-            }*/
-
-            try {
-                gracz.kontoBankowe.zwiekszStanKonta(10);
-            } catch (InvalidArgumentException e) {
-                e.printStackTrace();
             }
 
             System.out.println("chchch");
             if (isControllerCreated)
-                onChangeListener.onChange(gracz);
+                onChangeListener.onChange(wlascicielSerwisu);
         }
 
     }
@@ -68,7 +63,7 @@ public class Symulacja implements Runnable {
         return produkty;
     }
 
-    public Map<Produkt, Umowa> getUmowy() {
+    public ObservableMap<Produkt, Umowa> getUmowy() {
         return umowy;
     }
 
@@ -76,8 +71,8 @@ public class Symulacja implements Runnable {
         return dystrybutorzy;
     }
 
-    public static WlascicielSerwisu getGracz() {
-        return gracz;
+    public WlascicielSerwisu getWlascicielSerwisu() {
+        return wlascicielSerwisu;
     }
 
     public void endThreadInNextCycle(boolean endThread) {

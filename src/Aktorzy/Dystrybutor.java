@@ -38,7 +38,7 @@ public class Dystrybutor implements Runnable{
                 int jakoscProduktu = nowyProdukt.getJakosc();
                 int ryczalt = jakoscProduktu * 100 + rand.nextInt(jakoscProduktu * 50);
 
-                Umowa nowaUmowa = new Umowa(ryczalt, Main.getGracz().getKontoBankowe(), dystrybutor.getKontoBankowe());
+                Umowa nowaUmowa = new Umowa(ryczalt, SimulationAPI.getWlascicielSerwisu().getKontoBankowe(), dystrybutor.getKontoBankowe());
 
                 String opisWiadomości = nowyProdukt.getClass().getSimpleName() + ": " + nowyProdukt.getNazwa() + ", jakosc: " + nowyProdukt.getJakosc() + " za jedyne " + nowaUmowa.getRyczalt() + " zł miesięcznie. ";
                 Alert alert = new Alert(Alert.AlertType.NONE, opisWiadomości, ButtonType.YES, ButtonType.NO);
@@ -47,7 +47,7 @@ public class Dystrybutor implements Runnable{
                 alert.showAndWait();
 
                 if (alert.getResult() == ButtonType.YES) {
-                    Main.dodajProdukt(nowyProdukt, nowaUmowa);
+                    SimulationAPI.dodajProdukt(nowyProdukt, nowaUmowa);
                     udostepnianeProdukty.add(nowyProdukt);
                 }
             }

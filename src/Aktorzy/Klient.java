@@ -26,12 +26,12 @@ public class Klient implements Runnable{
                 e.printStackTrace();
             }
             Produkt produkt;
-            produkt = Main.getLosowyProdukt();
+            produkt = SimulationAPI.getLosowyProdukt();
             if(abonament == null) {
                 int decyzja = rand.nextInt(10);
                 if (decyzja < 8) {
                     if (umowy.size() == 0 || !wykupioneProdukty.contains(produkt)) {
-                        Umowa nowaUmowa = new Umowa(produkt.getCena(), kontoBankowe, Main.getGracz().getKontoBankowe());
+                        Umowa nowaUmowa = new Umowa(produkt.getCena(), kontoBankowe, SimulationAPI.getWlascicielSerwisu().getKontoBankowe());
                         umowy.add(nowaUmowa);
                         wykupioneProdukty.add(produkt);
                     }

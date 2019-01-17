@@ -39,25 +39,7 @@ public class Main extends Application {
     public static void main(String[] args) {
         Thread nowyWatek = new Thread(symulacja);
         nowyWatek.start();
+        SimulationAPI.setSymulacja(symulacja);
         launch(args);
-    }
-
-
-    static public void dodajProdukt(Produkt produkt, Umowa umowa){
-        symulacja.dodajProdukt(produkt, umowa);
-    }
-
-    public static Produkt getLosowyProdukt() {return symulacja.getLosowyProdukt(); }
-
-    public static ObservableList<Produkt> getProdukty(){
-        return symulacja.getProdukty();
-    }
-
-    public static ZbiorDystrybutorow getDystrybutorzy() {
-        return symulacja.getDystrybutorzy();
-    }
-
-    public static WlascicielSerwisu getGracz() {
-        return symulacja.getGracz();
     }
 }

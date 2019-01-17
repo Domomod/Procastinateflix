@@ -8,16 +8,16 @@ import javafx.scene.control.ButtonType;
 
 import java.util.Random;
 
-public class ZbiorDystrybutorow extends Thread{
+public class ZbiorDystrybutorow extends Thread {
     private ObservableList<Dystrybutor> dystrybutorzy = FXCollections.observableArrayList();
     private Random rand = new Random();
     private volatile boolean endAllthread = false;
     private int gorneOgraniczenie = 15;
 
-    public void run(){
-        while(!endAllthread){
+    public void run() {
+        while (!endAllthread) {
 
-            if(rand.nextInt(100)<2 && dystrybutorzy.size() < gorneOgraniczenie) {
+            if (rand.nextInt(100) < 2 && dystrybutorzy.size() < gorneOgraniczenie) {
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
@@ -46,11 +46,11 @@ public class ZbiorDystrybutorow extends Thread{
         });
     }
 
-    public void endAllThreadsInNexCycle(){
+    public void endAllThreadsInNexCycle() {
         endAllthread = true;
     }
 
-    public void dodajDystrybutora(){
+    public void dodajDystrybutora() {
         Dystrybutor nowyDystrybutor = new Dystrybutor();
         dystrybutorzy.add(nowyDystrybutor);
         nowyDystrybutorWiadomosc();
@@ -58,14 +58,14 @@ public class ZbiorDystrybutorow extends Thread{
         newThread.start();
     }
 
-    public Dystrybutor wylosujDystrybutora(){
+    public Dystrybutor wylosujDystrybutora() {
 
         return dystrybutorzy.get(rand.nextInt(dystrybutorzy.size()));
     }
 
-    public void wygenerujNowyProduktNaZlecenieUżytkownika(){
+    public void wygenerujNowyProduktNaZlecenieUżytkownika() {
 
-        if(dystrybutorzy.isEmpty()){
+        if (dystrybutorzy.isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "Czy chcesz rozpozcac negocjacje z kims nowym?", ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
             alert.setTitle("Nie ma dystrybutorow");
             alert.showAndWait();

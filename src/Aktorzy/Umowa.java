@@ -29,12 +29,12 @@ public class Umowa {
     }
 
     static public void podpiszAbonamentPremium(Klient klient){
-        Umowa abonament = new Umowa(30, klient.getKontoBankowe(), Main.getGracz().getKontoBankowe());
+        Umowa abonament = new Umowa(30, klient.getKontoBankowe(), SimulationAPI.getWlascicielSerwisu().getKontoBankowe());
         klient.setAbonament(abonament);
     }
 
     static public void podpiszZwyklyAbonament(Klient klient){
-        Umowa abonament = new Umowa(15, klient.getKontoBankowe(), Main.getGracz().getKontoBankowe());
+        Umowa abonament = new Umowa(15, klient.getKontoBankowe(), SimulationAPI.getWlascicielSerwisu().getKontoBankowe());
         klient.setAbonament(abonament);
     }
 
