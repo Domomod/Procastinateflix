@@ -23,24 +23,13 @@ public class KontoBankowe {
         this.stanKonta = stanKonta;
     }
 
-    public void przelejSrodkiNa(Integer kwota, KontoBankowe odbiorca) throws NiewystarczajacaLiczbaSrodkowException{
+    public void przelejSrodkiNa(Integer kwota, KontoBankowe odbiorca){
         try {
             odbiorca.zwiekszStanKonta(kwota);
             stanKonta -= kwota;
         } catch (InvalidArgumentException e) {
             e.printStackTrace();
         }
-
-        if(brakujeSrodkow(kwota));
-            throw new NiewystarczajacaLiczbaSrodkowException();
-    }
-
-    private boolean brakujeSrodkow(Integer kwota){
-        return kwota > stanKonta;
-    }
-
-    public class NiewystarczajacaLiczbaSrodkowException extends Throwable {
-
     }
 
     public Integer getNumerKonta() {

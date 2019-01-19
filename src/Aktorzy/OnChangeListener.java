@@ -1,6 +1,6 @@
 package Aktorzy;
 
 @FunctionalInterface
-public interface OnChangeListener {
-    void onChange(WlascicielSerwisu wlasciciel);
+public interface OnChangeListener<T> {
+    void onChange(T object);
 }

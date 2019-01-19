@@ -5,8 +5,10 @@ import Produkt.Produkt;
 
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.LineChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -17,6 +19,8 @@ import javafx.scene.text.Text;
 import java.net.URL;
 import java.util.*;
 
+import static java.lang.Thread.sleep;
+
 
 public class Controller implements Initializable {
 
@@ -25,9 +29,7 @@ public class Controller implements Initializable {
     @FXML
     private Text stanKonta;
     @FXML
-    private Text wydatki;
-    @FXML
-    private Text zarobki;
+    private Text podsumowanieMiesiaca;
     @FXML
     private Text popularnosc;
     @FXML
@@ -42,10 +44,12 @@ public class Controller implements Initializable {
     volatile private ListProperty<Dystrybutor> listaDystrybutorowProperty = new SimpleListProperty<>();
     @FXML
     volatile private ListView listaKlientow = new ListView();
-    volatile private ListProperty<Produkt> listaKlientowProperty = new SimpleListProperty<>();
+    volatile private ListProperty<Klient> listaKlientowProperty = new SimpleListProperty<>();
     @FXML
     volatile private ListView listaUmow = new ListView();
     volatile private ListProperty<Umowa> listaUmowProperty = new SimpleListProperty<>();
+    @FXML
+    volatile private LineChart<String, Number> produktChart;
 
     public Controller() {
 
@@ -59,14 +63,18 @@ public class Controller implements Initializable {
         SimulationAPI.wygenerujNowyProdukt();
     }
 
-    public void wyswietlProdukt(Produkt produkt) {
+    synchronized public void wyswietlProdukt(Produkt produkt) {
         nazwaProduktu.setText(produkt.getNazwa());
         //ToDo zmieniac zdjecie produktu;
         opisProduktu.setText(produkt.getOpis());
+        produktChart.getData().clear();
+        produktChart.getData().add(produkt.getWykresOgladalnosci());
     }
 
     public void wyswietlWlasciciela(WlascicielSerwisu gracz) {
         stanKonta.setText(gracz.getKontoBankowe().getStanKonta().toString());
+        podsumowanieMiesiaca.setText(gracz.getWydatkiWOstanimMiesiacu().toString());
+
     }
 
     @Override
@@ -79,10 +87,14 @@ public class Controller implements Initializable {
         listaDystrybutorowProperty.set(SimulationAPI.getDystrybutorzy());
 
         listaUmow.itemsProperty().bind(listaUmowProperty);
+        listaUmowProperty.set((ObservableList<Umowa>) SimulationAPI.getUmowy());
+
+        listaKlientow.itemsProperty().bind(listaKlientowProperty);
+        listaKlientowProperty.set(SimulationAPI.getKlienci());
 
         wyswietlWlasciciela(SimulationAPI.getWlascicielSerwisu());
 
-        Symulacja.setOnChangeListener(e -> {
+        Symulacja.setOnWlascicielChangeListener(e -> {
             wyswietlWlasciciela(e);
         });
 
@@ -108,9 +120,9 @@ public class Controller implements Initializable {
             }
         });
 
-        listaUmow.setCellFactory(param -> new ListCell<Produkt>() {
+        listaUmow.setCellFactory(param -> new ListCell<Umowa>() {
             @Override
-            protected void updateItem(Produkt item, boolean empty) {
+            protected void updateItem(Umowa item, boolean empty) {
                 super.updateItem(item, empty);
 
                 if (empty || item == null || item.getNazwa() == null) {
@@ -119,6 +131,24 @@ public class Controller implements Initializable {
                     Text text = new Text();
                     text.wrappingWidthProperty().bind(listaUmow.widthProperty().subtract(15));
                     text.setText(item.getNazwa());
+
+                    setPrefWidth(0);
+                    setGraphic(text);
+                }
+            }
+        });
+
+        listaKlientow.setCellFactory(param -> new ListCell<Klient>() {
+            @Override
+            protected void updateItem(Klient item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null || item.getNazwa() == null) {
+                    setText(null);
+                } else {
+                    Text text = new Text();
+                    text.wrappingWidthProperty().bind(listaKlientow.widthProperty().subtract(15));
+                    text.setText(item.getNazwa() + " zadowolenie: " + item.getZadowolenie());
 
                     setPrefWidth(0);
                     setGraphic(text);

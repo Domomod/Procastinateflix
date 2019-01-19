@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
@@ -137,7 +138,7 @@
                   <ListView fx:id="listaDystrybutorow" prefHeight="200.0" prefWidth="26.0" />
                </children>
             </VBox>
-            <VBox GridPane.rowIndex="2">
+            <VBox GridPane.columnIndex="1">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Klienci" GridPane.rowIndex="1" />
                   <ListView fx:id="listaKlientow" prefHeight="200.0" prefWidth="26.0" />
@@ -159,22 +160,30 @@
                   </HBox>
                   <HBox>
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Wydatki " />
-                        <Text fx:id="wydatki" strokeType="OUTSIDE" strokeWidth="0.0" text="---" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Podsumowanie Miesiaca " />
+                        <Text fx:id="podsumowanieMiesiaca" strokeType="OUTSIDE" strokeWidth="0.0" text="---" />
                      </children>
                   </HBox>
                   <HBox>
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Zarobki " />
-                        <Text fx:id="zarobki" strokeType="OUTSIDE" strokeWidth="0.0" text="---" />
-                     </children>
-                  </HBox>
-                  <HBox>
-                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" />
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Popularność " />
                         <Text fx:id="popularnosc" strokeType="OUTSIDE" strokeWidth="0.0" text="---" />
                      </children>
                   </HBox>
+               </children>
+            </VBox>
+            <VBox GridPane.rowIndex="2">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Oglądalność produktu" GridPane.rowIndex="2" />
+                  <LineChart fx:id="produktChart" animated="false" GridPane.rowIndex="2">
+                    <xAxis>
+                      <CategoryAxis side="BOTTOM" />
+                    </xAxis>
+                    <yAxis>
+                      <NumberAxis side="LEFT" />
+                    </yAxis>
+                  </LineChart>
                </children>
             </VBox>
          </children>

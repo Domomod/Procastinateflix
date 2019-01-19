@@ -16,9 +16,9 @@ import java.util.*;
 
 import static java.lang.Thread.sleep;
 
-public class Dystrybutor implements Runnable{
+public class Dystrybutor extends Osoba implements Runnable{
     private String nazwa;
-    private KontoBankowe kontoBankowe = new KontoBankowe();
+
     private static volatile boolean endAllThreads = false;
     private static final Random rand = new Random();
     private List<Produkt> udostepnianeProdukty = new ArrayList<>();
@@ -36,18 +36,21 @@ public class Dystrybutor implements Runnable{
                 Produkt nowyProdukt = wydajProdukt();
 
                 int jakoscProduktu = nowyProdukt.getJakosc();
-                int ryczalt = jakoscProduktu * 100 + rand.nextInt(jakoscProduktu * 50);
 
-                Umowa nowaUmowa = new Umowa(ryczalt, SimulationAPI.getWlascicielSerwisu().getKontoBankowe(), dystrybutor.getKontoBankowe());
+                int ryczalt;
+                synchronized (rand) {
+                    ryczalt = jakoscProduktu * 100 + rand.nextInt(jakoscProduktu * 50);
+                }
 
-                String opisWiadomości = nowyProdukt.getClass().getSimpleName() + ": " + nowyProdukt.getNazwa() + ", jakosc: " + nowyProdukt.getJakosc() + " za jedyne " + nowaUmowa.getRyczalt() + " zł miesięcznie. ";
+                String opisWiadomości = nowyProdukt.getClass().getSimpleName() + ": " + nowyProdukt.getNazwa() + ", jakosc: " + nowyProdukt.getJakosc() + " za jedyne " + ryczalt + " zł miesięcznie. ";
                 Alert alert = new Alert(Alert.AlertType.NONE, opisWiadomości, ButtonType.YES, ButtonType.NO);
                 alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
                 alert.setTitle( "Firma "+ nazwa +" chce podpisac nową umowę");
                 alert.showAndWait();
 
                 if (alert.getResult() == ButtonType.YES) {
-                    SimulationAPI.dodajProdukt(nowyProdukt, nowaUmowa);
+                    Umowa.podpiszUmowe( dystrybutor, nowyProdukt, ryczalt, SimulationAPI.getWlascicielSerwisu());
+                    SimulationAPI.dodajProdukt(nowyProdukt);
                     udostepnianeProdukty.add(nowyProdukt);
                 }
             }
@@ -90,9 +93,5 @@ public class Dystrybutor implements Runnable{
 
     public String getNazwa() {
         return nazwa;
-    }
-
-    public KontoBankowe getKontoBankowe() {
-        return kontoBankowe;
     }
 }

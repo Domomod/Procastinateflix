@@ -23,21 +23,37 @@ public class SimulationAPI {
         symulacja.getDystrybutorzy().wygenerujNowyProduktNaZlecenieUżytkownika();
     }
 
-    static public ObservableMap<Produkt, Umowa> getUmowy(){
-        return symulacja.getUmowy();
+    static public void wygenerujNowegoKlienta(){
+        symulacja.getKlienci().dodajKlienta();
     }
 
     static public ObservableList<Dystrybutor> getDystrybutorzy() {
         return symulacja.getDystrybutorzy().getDystrybutorzy();
     }
 
-    static public void dodajProdukt(Produkt produkt, Umowa umowa){
-        symulacja.dodajProdukt(produkt, umowa);
+    static public ObservableList<Klient> getKlienci() {
+        return symulacja.getKlienci().getKlienci();
     }
 
-    public static Produkt getLosowyProdukt() {return symulacja.getLosowyProdukt(); }
+    static public void dodajProdukt(Produkt produkt){
+        symulacja.dodajProdukt(produkt);
+    }
+
+    public void removeUmowy(Umowa umowa) {
+        symulacja.getWlascicielSerwisu().getUmowy().remove(umowa);
+    }
+
+    public void removeUmowy(ObservableList<Umowa> umowy) {
+        symulacja.getWlascicielSerwisu().getUmowy().removeAll(umowy);
+    }
+
+    public static Produkt getLosowyProdukt() throws Symulacja.BrakProduktowException {return symulacja.getLosowyProdukt(); }
 
     public static void setSymulacja(Symulacja symulacja) {
         SimulationAPI.symulacja = symulacja;
+    }
+
+    public static ObservableList<Umowa> getUmowy() {
+        return symulacja.getWlascicielSerwisu().getUmowy();
     }
 }

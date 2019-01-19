@@ -1,5 +1,9 @@
 package Produkt;
 
+import Produkt.Generatory.MiesiacRok;
+import javafx.application.Platform;
+import javafx.scene.chart.XYChart;
+
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.Date;
@@ -11,8 +15,12 @@ public class Produkt {
     private Date dataProdukcji;
     private Duration czasTrwania;
     private int jakosc;
-    static private int maksymalnaJakosc;
-    private int cena = 10;
+    static private int maksymalnaJakosc = 10;
+    volatile private int cena = 10;
+
+    volatile private  int ileRazyObejrzano = 0;
+    volatile private XYChart.Series<String,Number> wykresOgladalnosci = new XYChart.Series<String, Number>();
+
     //To Do: Dystrybutor
     private String krajProdukcji;
 
@@ -21,7 +29,7 @@ public class Produkt {
         this.opis = opis;
         this.dataProdukcji = dataProdukcji;
         this.czasTrwania = czasTrwania;
-        this.jakosc = 1 + (int)(Math.random() * 9);
+        this.jakosc = 1 + (int)(Math.random() * (maksymalnaJakosc - 1));
         this.krajProdukcji = krajProdukcji;
     }
 
@@ -30,10 +38,20 @@ public class Produkt {
         this.opis = opis;
         this.dataProdukcji = dataProdukcji;
         this.czasTrwania = czasTrwania;
-        if(jakosc > 10 || jakosc < 1)
+        if(jakosc > maksymalnaJakosc || jakosc < 1)
             throw new IllegalArgumentException( "jakosc filmu przedstawia się liczbą z zakresu <1, 10>" );
         this.jakosc = jakosc;
         this.krajProdukcji = krajProdukcji;
+    }
+
+    synchronized public void obejrzyj(){
+        ileRazyObejrzano += 1;
+    }
+
+    synchronized public void zaktualizujWykres(){
+        Platform.runLater(()->{
+            wykresOgladalnosci.getData().add(new XYChart.Data<>(MiesiacRok.getMiesiacRok(), ileRazyObejrzano));
+        });
     }
 
     public String getNazwa() {
@@ -70,5 +88,9 @@ public class Produkt {
 
     public static int getMaksymalnaJakosc() {
         return maksymalnaJakosc;
+    }
+
+    synchronized public XYChart.Series<String, Number> getWykresOgladalnosci() {
+        return wykresOgladalnosci;
     }
 }
