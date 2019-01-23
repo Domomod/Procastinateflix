@@ -14,10 +14,18 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="665.0" prefWidth="1025.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <left>
-      <VBox prefHeight="355.0" prefWidth="101.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="620.0" prefWidth="138.0" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="nowyDystrybutorButton" mnemonicParsing="false" onAction="#nowyDystrybutorButton" text="Nowy Dystrybutor" />
             <Button fx:id="testujDystrybutoraButton1" mnemonicParsing="false" onAction="#testujDystrybutoraButton" text="Nowy Produkt" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ścieżka do Pliku:" />
+            <TextField fx:id="sciezkaDoPliku" text="zapisy/zapis1.xml" />
+            <HBox>
+               <children>
+                  <Button fx:id="zapiszButton" mnemonicParsing="false" onAction="#zapiszSymulacje" text="Zapisz" />
+                  <Button fx:id="wczytajButton" mnemonicParsing="false" onAction="#wczytajSymulacje" text="Wczytaj" />
+               </children>
+            </HBox>
          </children>
       </VBox>
    </left>
@@ -54,10 +62,10 @@
       </VBox>
    </top>
    <center>
-      <GridPane BorderPane.alignment="CENTER">
+      <GridPane prefHeight="623.0" prefWidth="924.0" BorderPane.alignment="CENTER">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="632.0" minWidth="10.0" prefWidth="594.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="456.0" minWidth="10.0" prefWidth="330.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -150,7 +158,7 @@
                   <ListView fx:id="listaUmow" prefHeight="200.0" prefWidth="26.0" />
                </children>
             </VBox>
-            <VBox prefHeight="125.0" prefWidth="246.0">
+            <VBox prefHeight="204.0" prefWidth="505.0">
                <children>
                   <HBox>
                      <children>

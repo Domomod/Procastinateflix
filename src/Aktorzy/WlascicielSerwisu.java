@@ -1,13 +1,8 @@
 package Aktorzy;
 
-import Produkt.Produkt;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
+import java.io.Serializable;
 
-import java.util.Map;
-
-public class WlascicielSerwisu extends Osoba{
+public class WlascicielSerwisu extends Osoba implements Serializable {
     static Integer kwota_startowa = 10000;
     volatile Integer podsumowanieMiesiaca = 0;
     volatile Integer zarobkiWOstanimMiesiacu = 0;

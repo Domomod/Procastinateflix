@@ -2,7 +2,9 @@ package Aktorzy;
 
 import com.sun.javaws.exceptions.InvalidArgumentException;
 
-public class KontoBankowe {
+import java.io.Serializable;
+
+public class KontoBankowe implements Serializable {
     static Integer nastepnyNumer = 0;
     private Integer numerKonta;
     private Integer stanKonta;

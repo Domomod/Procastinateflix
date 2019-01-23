@@ -7,19 +7,22 @@ import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import sample.Controller;
 
+import java.beans.XMLDecoder;
+import java.beans.XMLEncoder;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.Map;
 
 import static java.lang.Thread.sleep;
 
-public class Symulacja implements Runnable {
+public class Symulacja implements Runnable, Serializable {
     private WlascicielSerwisu wlascicielSerwisu = new WlascicielSerwisu();
-    private ObservableList<Produkt> produkty = FXCollections.observableArrayList();
-
+    transient private ObservableList<Produkt> produkty = FXCollections.observableArrayList();
     private ZbiorDystrybutorow dystrybutorzy = new ZbiorDystrybutorow();
     private ZbiorKlientow klienci = new ZbiorKlientow();
     private boolean endThread = false;
+
     private static OnChangeListener<WlascicielSerwisu> onWlascicielChangeListener;
-    static public Controller kontroler;
     public static boolean isControllerCreated = false;
 
     public Symulacja() {
@@ -96,5 +99,53 @@ public class Symulacja implements Runnable {
 
     public static void setOnWlascicielChangeListener(OnChangeListener<WlascicielSerwisu> onWlascicielChangeListener) {
         Symulacja.onWlascicielChangeListener = onWlascicielChangeListener;
+    }
+
+    private void readObject(java.io.ObjectInputStream stream) throws IOException, ClassNotFoundException {
+        stream.defaultReadObject();
+        ArrayList<Produkt> temp = (ArrayList<Produkt>)stream.readObject();
+        produkty = FXCollections.observableArrayList(temp);
+    }
+
+    private void writeObject(java.io.ObjectOutputStream stream) throws IOException {
+        stream.defaultWriteObject();
+        stream.writeObject(new ArrayList<Produkt>(produkty));
+
+    }
+
+    public void setWlascicielSerwisu(WlascicielSerwisu wlascicielSerwisu) {
+        this.wlascicielSerwisu = wlascicielSerwisu;
+    }
+
+    public void setProdukty(ObservableList<Produkt> produkty) {
+        this.produkty = produkty;
+    }
+
+    public void setDystrybutorzy(ZbiorDystrybutorow dystrybutorzy) {
+        this.dystrybutorzy = dystrybutorzy;
+    }
+
+    public void setKlienci(ZbiorKlientow klienci) {
+        this.klienci = klienci;
+    }
+
+    public boolean isEndThread() {
+        return endThread;
+    }
+
+    public void setEndThread(boolean endThread) {
+        this.endThread = endThread;
+    }
+
+    public static OnChangeListener<WlascicielSerwisu> getOnWlascicielChangeListener() {
+        return onWlascicielChangeListener;
+    }
+
+    public static boolean isIsControllerCreated() {
+        return isControllerCreated;
+    }
+
+    public static void setIsControllerCreated(boolean isControllerCreated) {
+        Symulacja.isControllerCreated = isControllerCreated;
     }
 }

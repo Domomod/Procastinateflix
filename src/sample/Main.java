@@ -38,8 +38,8 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         Thread nowyWatek = new Thread(symulacja);
-        nowyWatek.start();
         SimulationAPI.setSymulacja(symulacja);
+        nowyWatek.start();
         launch(args);
     }
 }

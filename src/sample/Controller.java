@@ -9,10 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 
@@ -50,6 +47,8 @@ public class Controller implements Initializable {
     volatile private ListProperty<Umowa> listaUmowProperty = new SimpleListProperty<>();
     @FXML
     volatile private LineChart<String, Number> produktChart;
+    @FXML
+    private TextField sciezkaDoPliku;
 
     public Controller() {
 
@@ -74,7 +73,21 @@ public class Controller implements Initializable {
     public void wyswietlWlasciciela(WlascicielSerwisu gracz) {
         stanKonta.setText(gracz.getKontoBankowe().getStanKonta().toString());
         podsumowanieMiesiaca.setText(gracz.getWydatkiWOstanimMiesiacu().toString());
+    }
 
+    public void zapiszSymulacje(){
+        String sciezka = sciezkaDoPliku.getText();
+        SimulationAPI.serializacjiaDoXML(sciezka);
+    }
+
+    public void wczytajSymulacje() {
+        String sciezka = sciezkaDoPliku.getText();
+        SimulationAPI.deserializacjaXML(sciezka);
+
+        listaUmowProperty.set(SimulationAPI.getUmowy());
+        listaProduktowProperty.set(SimulationAPI.getProdukty());
+        listaDystrybutorowProperty.set(SimulationAPI.getDystrybutorzy());
+        listaKlientowProperty.set(SimulationAPI.getKlienci());
     }
 
     @Override

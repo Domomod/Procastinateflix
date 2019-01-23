@@ -4,12 +4,13 @@ import Produkt.Generatory.MiesiacRok;
 import javafx.application.Platform;
 import javafx.scene.chart.XYChart;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.Date;
 import java.util.Random;
 
-public class Produkt {
+public class Produkt implements Serializable {
     private String nazwa;
     private String opis;
     private Date dataProdukcji;
@@ -19,7 +20,7 @@ public class Produkt {
     volatile private int cena = 10;
 
     volatile private  int ileRazyObejrzano = 0;
-    volatile private XYChart.Series<String,Number> wykresOgladalnosci = new XYChart.Series<String, Number>();
+    transient volatile private XYChart.Series<String,Number> wykresOgladalnosci = new XYChart.Series<String, Number>();
 
     //To Do: Dystrybutor
     private String krajProdukcji;

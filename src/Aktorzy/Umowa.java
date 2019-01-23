@@ -5,9 +5,10 @@ import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import sample.Main;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class Umowa {
+public class Umowa implements Serializable {
     private Integer ryczalt;
     private String nazwa;
     private Osoba platnik;

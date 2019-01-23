@@ -3,6 +3,12 @@ package Aktorzy;
 import Produkt.Produkt;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.layout.Region;
+
+import java.io.*;
+import java.util.ArrayList;
 
 public class SimulationAPI {
     private static Symulacja symulacja = new Symulacja();
@@ -55,5 +61,42 @@ public class SimulationAPI {
 
     public static ObservableList<Umowa> getUmowy() {
         return symulacja.getWlascicielSerwisu().getUmowy();
+    }
+
+    public static void serializacjiaDoXML(String nazwaPliku) {
+        try {
+            ObjectOutputStream encoder = new ObjectOutputStream(
+                    new BufferedOutputStream(
+                            new FileOutputStream(nazwaPliku)));
+            encoder.writeObject(symulacja);
+            encoder.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        /*catch (IOException e) {
+            wyswietlOknoBleduSerializacji(e);
+        }*/
+    }
+
+    public static void deserializacjaXML(String nazwaPliku) {
+        try {
+            ObjectInputStream decoder = new ObjectInputStream(
+                    new BufferedInputStream(
+                            new FileInputStream(nazwaPliku)));
+            symulacja = (Symulacja)decoder.readObject();
+            decoder.close();
+        } catch (IOException e) {
+            wyswietlOknoBleduSerializacji(e);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void wyswietlOknoBleduSerializacji(Exception e){
+        String opisWiadomości = "Coś jest nie tak z plikiem: " + e.getMessage();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, opisWiadomości);
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+        alert.setTitle( "Bład Serializacij/Deserializacji");
+        alert.showAndWait();
     }
 }

@@ -10,15 +10,16 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.layout.Region;
 import sample.Main;
 
+import java.io.IOException;
+import java.io.Serializable;
 import java.net.URL;
 import java.time.Duration;
 import java.util.*;
 
 import static java.lang.Thread.sleep;
 
-public class Dystrybutor extends Osoba implements Runnable{
+public class Dystrybutor extends Osoba implements Runnable, Serializable {
     private String nazwa;
-
     private static volatile boolean endAllThreads = false;
     private static final Random rand = new Random();
     private List<Produkt> udostepnianeProdukty = new ArrayList<>();

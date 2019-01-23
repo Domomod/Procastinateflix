@@ -4,10 +4,13 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Random;
 
-public class ZbiorKlientow extends Thread {
-    private ObservableList<Klient> klienci = FXCollections.observableArrayList();
+public class ZbiorKlientow extends Thread implements Serializable {
+    transient private ObservableList<Klient> klienci = FXCollections.observableArrayList();
     private Random rand = new Random();
     private volatile boolean endAllthread = false;
     private int gorneOgraniczenie = 300;
@@ -56,6 +59,16 @@ public class ZbiorKlientow extends Thread {
 
         return klienci.get(rand.nextInt(klienci.size()));
     }
+
+    synchronized public void readObject(java.io.ObjectInputStream stream) throws IOException, ClassNotFoundException {
+        ArrayList<Klient> tempKlienci = (ArrayList<Klient>)stream.readObject();
+        klienci.clear();
+        klienci.addAll(tempKlienci);
+    }
+    synchronized public void writeObject(java.io.ObjectOutputStream stream) throws IOException {
+        ArrayList<Klient> temp = new ArrayList<Klient>(klienci);
+    }
+
 
     public ObservableList<Klient> getKlienci() {
         return klienci;

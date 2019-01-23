@@ -6,10 +6,13 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Random;
 
-public class ZbiorDystrybutorow extends Thread {
-    private ObservableList<Dystrybutor> dystrybutorzy = FXCollections.observableArrayList();
+public class ZbiorDystrybutorow extends Thread implements Serializable {
+    transient private ObservableList<Dystrybutor> dystrybutorzy = FXCollections.observableArrayList();
     private Random rand = new Random();
     private volatile boolean endAllthread = false;
     private int gorneOgraniczenie = 15;
@@ -77,6 +80,17 @@ public class ZbiorDystrybutorow extends Thread {
 
         Dystrybutor dystrybutor = dystrybutorzy.get(rand.nextInt(dystrybutorzy.size()));
         dystrybutor.zaproponujUmowe();
+    }
+
+    private void readObject(java.io.ObjectInputStream stream) throws IOException, ClassNotFoundException {
+        stream.defaultReadObject();
+        ArrayList<Dystrybutor> tempDystrybutorzy = (ArrayList<Dystrybutor>)stream.readObject();
+        dystrybutorzy = FXCollections.observableArrayList(tempDystrybutorzy);
+    }
+
+    private void writeObject(java.io.ObjectOutputStream stream) throws IOException {
+        stream.defaultWriteObject();
+        stream.writeObject(new ArrayList<Dystrybutor>(dystrybutorzy));
     }
 
     public ObservableList<Dystrybutor> getDystrybutorzy() {

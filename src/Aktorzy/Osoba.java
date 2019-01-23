@@ -1,16 +1,21 @@
 package Aktorzy;
 
+import Produkt.Produkt;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 
-public class Osoba {
-    private KontoBankowe kontoBankowe;
-    private ObservableList<Umowa> umowy;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Random;
+
+public class Osoba implements Serializable {
+    private KontoBankowe kontoBankowe = new KontoBankowe();
+    transient private ObservableList<Umowa> umowy = FXCollections.observableArrayList();
 
     public Osoba() {
-        this.kontoBankowe = new KontoBankowe();
-        this.umowy = FXCollections.observableArrayList();
     }
 
     public Osoba(KontoBankowe kontoBankowe) {
@@ -42,6 +47,17 @@ public class Osoba {
         Platform.runLater(()->{
             osoba.umowy.remove(umowa);
         });
+    }
+
+    private void readObject(java.io.ObjectInputStream stream) throws IOException, ClassNotFoundException {
+        stream.defaultReadObject();
+        ArrayList<Umowa> temp = (ArrayList<Umowa>)stream.readObject();
+        umowy = FXCollections.observableArrayList(temp);
+    }
+
+    private void writeObject(java.io.ObjectOutputStream stream) throws IOException {
+        stream.defaultWriteObject();
+        stream.writeObject(new ArrayList<Umowa>(umowy));
     }
 
     public void removeUmowy(ObservableList<Umowa> umowy) {

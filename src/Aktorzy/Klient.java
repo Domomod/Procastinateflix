@@ -5,11 +5,15 @@ import Produkt.Produkt;
 import com.sun.javaws.exceptions.InvalidArgumentException;
 import sample.Main;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.*;
 
 import static java.lang.Thread.sleep;
 
-public class Klient extends Osoba implements Runnable{
+public class Klient extends Osoba implements Runnable, Serializable {
     private String nazwa;
     private static volatile boolean endAllThreads = false;
     private static final Random rand = new Random();

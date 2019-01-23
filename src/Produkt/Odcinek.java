@@ -1,9 +1,10 @@
 package Produkt;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 
-public class Odcinek {
+public class Odcinek implements Serializable {
     private SimpleDateFormat dataPremiery;
     private Duration czasTrwania;
     private String nazwa;
