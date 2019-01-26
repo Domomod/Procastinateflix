@@ -60,13 +60,14 @@ public class ZbiorKlientow extends Thread implements Serializable {
         return klienci.get(rand.nextInt(klienci.size()));
     }
 
-    synchronized public void readObject(java.io.ObjectInputStream stream) throws IOException, ClassNotFoundException {
+    private void readObject(java.io.ObjectInputStream stream) throws IOException, ClassNotFoundException {
+        stream.defaultReadObject();
         ArrayList<Klient> tempKlienci = (ArrayList<Klient>)stream.readObject();
-        klienci.clear();
-        klienci.addAll(tempKlienci);
+        klienci = FXCollections.observableArrayList(tempKlienci);
     }
-    synchronized public void writeObject(java.io.ObjectOutputStream stream) throws IOException {
-        ArrayList<Klient> temp = new ArrayList<Klient>(klienci);
+    private void writeObject(java.io.ObjectOutputStream stream) throws IOException {
+        stream.defaultWriteObject();
+        stream.writeObject(new ArrayList<Klient>(klienci));
     }
 
 

@@ -88,6 +88,11 @@ public class Controller implements Initializable {
         listaProduktowProperty.set(SimulationAPI.getProdukty());
         listaDystrybutorowProperty.set(SimulationAPI.getDystrybutorzy());
         listaKlientowProperty.set(SimulationAPI.getKlienci());
+
+        //listaUmow.notify();
+        //listaKlientow.notify();
+        //listaDystrybutorow.notify();
+        //listaProduktow.notify();
     }
 
     @Override

@@ -21,15 +21,15 @@ public class SimulationAPI {
         return symulacja.getProdukty();
     }
 
-    static public void wygenerujNowegoDystrybutora(){
+    synchronized static public void wygenerujNowegoDystrybutora(){
         symulacja.getDystrybutorzy().dodajDystrybutora();
     }
 
-    static public void wygenerujNowyProdukt(){
+    synchronized static public void wygenerujNowyProdukt(){
         symulacja.getDystrybutorzy().wygenerujNowyProduktNaZlecenieUżytkownika();
     }
 
-    static public void wygenerujNowegoKlienta(){
+    synchronized static public void wygenerujNowegoKlienta(){
         symulacja.getKlienci().dodajKlienta();
     }
 
@@ -41,7 +41,7 @@ public class SimulationAPI {
         return symulacja.getKlienci().getKlienci();
     }
 
-    static public void dodajProdukt(Produkt produkt){
+    synchronized static public void dodajProdukt(Produkt produkt){
         symulacja.dodajProdukt(produkt);
     }
 
@@ -63,7 +63,7 @@ public class SimulationAPI {
         return symulacja.getWlascicielSerwisu().getUmowy();
     }
 
-    public static void serializacjiaDoXML(String nazwaPliku) {
+    synchronized public static void serializacjiaDoXML(String nazwaPliku) {
         try {
             ObjectOutputStream encoder = new ObjectOutputStream(
                     new BufferedOutputStream(
@@ -78,7 +78,7 @@ public class SimulationAPI {
         }*/
     }
 
-    public static void deserializacjaXML(String nazwaPliku) {
+    synchronized public static void deserializacjaXML(String nazwaPliku) {
         try {
             ObjectInputStream decoder = new ObjectInputStream(
                     new BufferedInputStream(
