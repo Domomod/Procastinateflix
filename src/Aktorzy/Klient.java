@@ -26,9 +26,12 @@ public class Klient extends Osoba implements Runnable, Serializable {
         nazwa = GeneratorImionNazwisk.wygenerujNazwe();
     }
 
+    /**
+     * Watek klienta odpowiedzialny za okresowe podpisywanie nowych umow.
+     */
     @Override
     public void run() {
-        while(!endAllThreads){
+        while(!ZbiorKlientow.isEndAllthread()){
             try {
                 try {
                     sleep(600);
@@ -58,6 +61,9 @@ public class Klient extends Osoba implements Runnable, Serializable {
         }
     }
 
+    /**
+     * Egezkwuj umowy o wykupienie produktu lub abonamenty
+     */
     @Override
     public void wyegzekwujUmowy(){
         for (Umowa umowa : super.getUmowy()) {
@@ -68,9 +74,12 @@ public class Klient extends Osoba implements Runnable, Serializable {
         }
     }
 
+    /**
+     * Decyduj na podstawie swojego zadowolenia z systymu VOD i ceny jego abonamentu czy chcesz zakupic/zerwac/zmienic abonamet.
+     */
     public void decydujOAbonamencie(){
-        if(zadowolenie > 100){
-            if(zadowolenie > 500 && ( !maAbonament || abonamentJestPremium())){
+        if(zadowolenie > 100 + 5 * Umowa.getRyczaltAbonamentuZwyklego()){
+            if(zadowolenie > 500 + 5 * Umowa.getRyczaltAbonamentuPremium() && ( !maAbonament || abonamentJestPremium())){
                 Umowa.podpiszAbonamentPremium(this, SimulationAPI.getWlascicielSerwisu());
             }else if (!maAbonament || abonamentJestZwykly()){
                 Umowa.podpiszZwyklyAbonament(this, SimulationAPI.getWlascicielSerwisu());

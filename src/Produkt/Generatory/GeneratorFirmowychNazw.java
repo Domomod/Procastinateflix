@@ -3,6 +3,9 @@ package Produkt.Generatory;
 import java.util.Random;
 
 public class GeneratorFirmowychNazw {
+    /**
+     * @return zwraca losowa nazwe firmy.
+     */
     static public String wygenerujNazwe(){
         String s1 = Slowo1.random();
         String s2 = Slowo2.random();

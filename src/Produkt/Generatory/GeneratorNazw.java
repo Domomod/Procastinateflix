@@ -6,6 +6,9 @@ import java.util.Set;
 import java.util.TreeSet;
 
 public class GeneratorNazw {
+    /**
+     * @return zwraca losowa dwuczłonową nazwę. Zasób słownictwa z góry ustalony.
+     */
     static public String wygenerujNazwe(){
         String przymiotnik = Przymiotnik.random().toString();
         String rzeczownik = Rzeczowniki.random().toString();

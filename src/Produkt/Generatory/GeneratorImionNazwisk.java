@@ -3,6 +3,9 @@ package Produkt.Generatory;
 import java.util.Random;
 
 public class GeneratorImionNazwisk {
+    /**
+     * @return zwraca jako lanuch znakow meskie imie i nazwisko.
+     */
     static public String wygenerujNazwe(){
         String s1 = GeneratorImionNazwisk.Imie.random();
         String s2 = GeneratorImionNazwisk.Nazwisko.random();

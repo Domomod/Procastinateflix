@@ -14,9 +14,13 @@ import java.util.Random;
 public class ZbiorDystrybutorow extends Thread implements Serializable {
     transient private ObservableList<Dystrybutor> dystrybutorzy = FXCollections.observableArrayList();
     private Random rand = new Random();
-    private volatile boolean endAllthread = false;
+    private static volatile boolean endAllthread = false;
     private int gorneOgraniczenie = 15;
 
+
+    /**
+     * Uruchamia watek zarzadzajacy tworzeniem nowych dystrybutorow
+     */
     public void run() {
         while (!endAllthread) {
 
@@ -49,10 +53,16 @@ public class ZbiorDystrybutorow extends Thread implements Serializable {
         });
     }
 
+    /**
+     * Ustawia flage dzięki ktorej funkcja run przy następnej iteracji zakonczy swoje działanie
+     */
     public void endAllThreadsInNexCycle() {
         endAllthread = true;
     }
 
+    /**
+     * Dodaje nowego losowo wwygenerowanego dystrtubutora do puli dystrybutorow. Watek dystrybutora zostaje automatyzcnie uruchomiony
+     */
     public void dodajDystrybutora() {
         Dystrybutor nowyDystrybutor = new Dystrybutor();
         dystrybutorzy.add(nowyDystrybutor);
@@ -95,5 +105,9 @@ public class ZbiorDystrybutorow extends Thread implements Serializable {
 
     public ObservableList<Dystrybutor> getDystrybutorzy() {
         return dystrybutorzy;
+    }
+
+    public static boolean isEndAllthread() {
+        return endAllthread;
     }
 }

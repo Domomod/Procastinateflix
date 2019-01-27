@@ -13,7 +13,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <left>
       <VBox prefWidth="138.0" BorderPane.alignment="TOP_LEFT">
          <children>
@@ -85,18 +85,18 @@
    <center>
       <GridPane BorderPane.alignment="CENTER">
         <columnConstraints>
-          <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
-          <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+          <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="10.0" percentWidth="80.0" />
+          <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="10.0" prefWidth="400.0" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+          <RowConstraints vgrow="NEVER" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
         </rowConstraints>
          <children>
             <VBox GridPane.rowIndex="1">
                <children>
-                  <VBox prefHeight="132.0" prefWidth="180.0" GridPane.columnIndex="1">
+                  <VBox GridPane.columnIndex="1">
                      <children>
                         <VBox>
                            <children>
@@ -147,14 +147,44 @@
                         </VBox>
                         <VBox alignment="BOTTOM_LEFT">
                            <children>
-                              <HBox alignment="CENTER_LEFT">
+                              <HBox>
                                  <children>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Cena :" />
-                                    <TextField fx:id="cenaProduktu" prefHeight="0.0" prefWidth="178.0" VBox.vgrow="NEVER" />
-                                    <Button mnemonicParsing="false" onAction="#ustawCeneProduktuButton" prefHeight="25.0" prefWidth="181.0" text="Zaktualizuj" />
+                                    <VBox>
+                                       <children>
+                                          <HBox alignment="CENTER_LEFT">
+                                             <children>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Cena :" />
+                                                <TextField fx:id="cenaProduktu" prefHeight="0.0" prefWidth="178.0" VBox.vgrow="NEVER" />
+                                                <Button mnemonicParsing="false" onAction="#ustawCeneProduktuButton" prefHeight="25.0" prefWidth="181.0" text="Zaktualizuj" />
+                                             </children>
+                                          </HBox>
+                                          <Button mnemonicParsing="false" onAction="#wycofajPozycjeButton" text="Wycofaj pozycję" HBox.hgrow="ALWAYS" />
+                                       </children>
+                                    </VBox>
                                  </children>
                               </HBox>
-                              <Button mnemonicParsing="false" onAction="#wycofajPozycjeButton" text="Wycofaj pozycję" HBox.hgrow="ALWAYS" />
+                              <HBox>
+                                 <children>
+                                    <VBox fx:id="sezonyVBOX">
+                                       <children>
+                                          <Text fx:id="sezony" strokeType="OUTSIDE" strokeWidth="0.0" text="Sezony" />
+                                          <ListView fx:id="sezonyListView" />
+                                       </children>
+                                    </VBox>
+                                    <VBox fx:id="odcinkiVBOX">
+                                       <children>
+                                          <Text fx:id="odcinki" strokeType="OUTSIDE" strokeWidth="0.0" text="Odcinki" />
+                                          <ListView fx:id="odcinkiListView" />
+                                       </children>
+                                    </VBox>
+                                    <VBox fx:id="aktorzyVBOX">
+                                       <children>
+                                          <Text fx:id="aktorzy" strokeType="OUTSIDE" strokeWidth="0.0" text="Aktorzy" />
+                                          <ListView fx:id="aktorzyListView" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
                            </children>
                         </VBox>
                      </children>
@@ -167,19 +197,19 @@
             <VBox GridPane.columnIndex="1" GridPane.rowIndex="1">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Dystrybutorzy" GridPane.rowIndex="1" />
-                  <ListView fx:id="listaDystrybutorow" prefHeight="200.0" prefWidth="26.0" />
+                  <ListView fx:id="listaDystrybutorow" prefHeight="200.0" />
                </children>
             </VBox>
             <VBox GridPane.columnIndex="1">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Klienci" GridPane.rowIndex="1" />
-                  <ListView fx:id="listaKlientow" prefHeight="200.0" prefWidth="26.0" />
+                  <ListView fx:id="listaKlientow" prefHeight="200.0" />
                </children>
             </VBox>
             <VBox GridPane.columnIndex="1" GridPane.rowIndex="2">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Umowy" GridPane.rowIndex="1" />
-                  <ListView fx:id="listaUmow" prefHeight="200.0" prefWidth="26.0" />
+                  <ListView fx:id="listaUmow" prefHeight="200.0" />
                </children>
             </VBox>
             <VBox prefHeight="152.0" prefWidth="561.0">
@@ -210,7 +240,7 @@
                <children>
                   <HBox>
                      <children>
-                        <VBox>
+                        <VBox fx:id="odciniText">
                            <children>
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Oglądalność produktu" GridPane.rowIndex="2" />
                               <LineChart fx:id="produktChart" animated="false" prefHeight="190.0" prefWidth="564.0" GridPane.rowIndex="2">
@@ -221,12 +251,6 @@
                                   <NumberAxis side="LEFT" />
                                 </yAxis>
                               </LineChart>
-                           </children>
-                        </VBox>
-                        <VBox>
-                           <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Aktorzy" />
-                              <ListView prefHeight="200.0" prefWidth="200.0" />
                            </children>
                         </VBox>
                      </children>

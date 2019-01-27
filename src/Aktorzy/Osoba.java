@@ -14,6 +14,7 @@ import java.util.Random;
 public class Osoba implements Serializable {
     private KontoBankowe kontoBankowe = new KontoBankowe();
     transient private ObservableList<Umowa> umowy = FXCollections.observableArrayList();
+    private Object umowyLock = new Object();
 
     public Osoba() {
     }
@@ -36,17 +37,23 @@ public class Osoba implements Serializable {
     }
 
     public void addUmowa(Umowa umowa) {
-        Osoba osoba = this;
-        Platform.runLater(()->{
-            osoba.umowy.add(umowa);
-        });
+        synchronized (umowyLock) {
+            Osoba osoba = this;
+            Platform.runLater(()->{
+                osoba.umowy.add(umowa);
+            });
+        }
+
     }
 
     public void removeUmowy(Umowa umowa) {
-        Osoba osoba = this;
-        Platform.runLater(()->{
-            osoba.umowy.remove(umowa);
-        });
+        synchronized (umowyLock) {
+            Osoba osoba = this;
+            Platform.runLater(()->{
+                osoba.umowy.remove(umowa);
+            });
+        }
+
     }
 
     private void readObject(java.io.ObjectInputStream stream) throws IOException, ClassNotFoundException {
@@ -61,10 +68,19 @@ public class Osoba implements Serializable {
     }
 
     public void removeUmowy(ObservableList<Umowa> umowy) {
-        this.umowy.removeAll(umowy);
+        Osoba osoba = this;
+        Platform.runLater(()->{
+            synchronized (umowyLock) {
+                osoba.umowy.removeAll(umowy);
+            }
+        });
     }
 
     public ObservableList<Umowa> getUmowy() {
         return umowy;
+    }
+
+    public Object getUmowyLock() {
+        return umowyLock;
     }
 }

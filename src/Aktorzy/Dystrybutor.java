@@ -4,6 +4,8 @@ import Produkt.Generatory.GeneratorFirmowychNazw;
 import Produkt.Generatory.GeneratorNazw;
 import Produkt.Produkt;
 import Produkt.Film;
+import Produkt.Serial;
+
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -20,7 +22,6 @@ import static java.lang.Thread.sleep;
 
 public class Dystrybutor extends Osoba implements Runnable, Serializable {
     private String nazwa;
-    private static volatile boolean endAllThreads = false;
     private static final Random rand = new Random();
     private List<Produkt> udostepnianeProdukty = new ArrayList<>();
 
@@ -28,6 +29,9 @@ public class Dystrybutor extends Osoba implements Runnable, Serializable {
         this.nazwa = GeneratorFirmowychNazw.wygenerujNazwe();
     }
 
+    /**
+     * Wytworz nowy produkt i zaproponuj umowe wlascicielowi serwisu.
+     */
     public void zaproponujUmowe() {
         Dystrybutor dystrybutor = this;
         Platform.runLater(new Runnable() {
@@ -50,7 +54,7 @@ public class Dystrybutor extends Osoba implements Runnable, Serializable {
                 alert.showAndWait();
 
                 if (alert.getResult() == ButtonType.YES) {
-                    Umowa.podpiszUmowe( dystrybutor, nowyProdukt, ryczalt, SimulationAPI.getWlascicielSerwisu());
+                    UmowaOProdukt.podpiszUmowe( dystrybutor, nowyProdukt, ryczalt, SimulationAPI.getWlascicielSerwisu());
                     SimulationAPI.dodajProdukt(nowyProdukt);
                     udostepnianeProdukty.add(nowyProdukt);
                 }
@@ -58,28 +62,44 @@ public class Dystrybutor extends Osoba implements Runnable, Serializable {
         });
     }
 
-    private Produkt wydajProdukt(){
-        Duration czasTrwania = Duration.ZERO;
-        czasTrwania.plusHours( 1 );
-        czasTrwania.plusMinutes( 45 );
-        Set<String> aktorzy = new TreeSet<>();
-        aktorzy.add("Jacek Piotrowiak");
-        aktorzy.add("MaFXMLciek Borowiak");
-        aktorzy.add("Bolesław Chrobry");
-        Set<URL> linkiDoZwiastunow = new TreeSet<>();
+    /**
+     * Usuwa umowe, jesli była to umowa o produkt usuwa tez produkt z listy oferowanych produktow
+     *
+     * @param umowa umowa do usuniecia
+     */
+    @Override
+    public void removeUmowy(Umowa umowa) {
+        super.removeUmowy(umowa);
+        if(umowa instanceof  UmowaOProdukt) {
+            UmowaOProdukt umowaOProdukt = (UmowaOProdukt)umowa;
+            Produkt produkt = umowaOProdukt.getProdukt();
+            this.udostepnianeProdukty.remove(produkt);
+        }
+    }
 
-        Produkt nowyProdukt = new Film(GeneratorNazw.wygenerujNazwe(), "Serial wyprodukowany przez blahblah blah Wysokie oceny, wysoka jakość, blah blah blah blah, Wspaniała gra aktorska blah blah blah blahblah.",
-                new Date(2018,6,27), czasTrwania, "Polska", aktorzy, linkiDoZwiastunow, "Akcji"  );
+    /**
+     * Tworzy nowy produkt
+     *
+     * @return nowy serial lub film
+     */
+    private Produkt wydajProdukt(){
+
+        int coWyprodukowac = (int)(Math.random() * 2);
+
+        Produkt nowyProdukt;
+        if(coWyprodukowac == 0)
+            nowyProdukt = new Serial();
+        else
+            nowyProdukt = new Film();
         return nowyProdukt;
     }
 
-    synchronized static void endAllThreadsInNextCycle(){
-        endAllThreads = true;
-    }
-
+    /**
+     * Watek dystrybutora odpowiedzialn za okresowe proponowanie nowych umow.
+     */
     @Override
     public void run() {
-        while(!endAllThreads) {
+        while(!ZbiorDystrybutorow.isEndAllthread()) {
             try {
                 sleep(1800);
             } catch (InterruptedException e) {

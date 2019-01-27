@@ -12,9 +12,12 @@ import java.util.Random;
 public class ZbiorKlientow extends Thread implements Serializable {
     transient private ObservableList<Klient> klienci = FXCollections.observableArrayList();
     private Random rand = new Random();
-    private volatile boolean endAllthread = false;
+    private static volatile boolean endAllthread = false;
     private int gorneOgraniczenie = 300;
 
+    /**
+     * Uruchamia watek zarzadzajacy tworzeniem nowych klientow
+     */
     public void run() {
         while (!endAllthread) {
             try {
@@ -37,27 +40,21 @@ public class ZbiorKlientow extends Thread implements Serializable {
         }
     }
 
+    /**
+     * Ustawia flage dzięki ktorej funkcja run przy następnej iteracji zakonczy swoje działanie
+     */
     public void endAllThreadsInNexCycle() {
         endAllthread = true;
     }
 
-    synchronized void wyegzekwujUmowy(){
-        for (Klient klient:
-             klienci) {
-            klient.wyegzekwujUmowy();
-        }
-    }
-
+    /**
+     * Dodaje nowego losowo wygenerowanego klienta.  Watek klienta zostaje automatyzcnie uruchomiony
+     */
     synchronized public void dodajKlienta() {
         Klient nowyKlient = new Klient();
         klienci.add(nowyKlient);
         Thread newThread = new Thread(nowyKlient);
         newThread.start();
-    }
-
-    synchronized public Klient wylosujKlienta() {
-
-        return klienci.get(rand.nextInt(klienci.size()));
     }
 
     private void readObject(java.io.ObjectInputStream stream) throws IOException, ClassNotFoundException {
@@ -73,5 +70,9 @@ public class ZbiorKlientow extends Thread implements Serializable {
 
     public ObservableList<Klient> getKlienci() {
         return klienci;
+    }
+
+    public static boolean isEndAllthread() {
+        return endAllthread;
     }
 }

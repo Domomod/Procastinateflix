@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.chart.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.image.*?>
@@ -12,20 +13,40 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="665.0" prefWidth="1025.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <left>
-      <VBox prefHeight="620.0" prefWidth="138.0" BorderPane.alignment="CENTER">
+      <VBox prefWidth="138.0" BorderPane.alignment="TOP_LEFT">
          <children>
             <Button fx:id="nowyDystrybutorButton" mnemonicParsing="false" onAction="#nowyDystrybutorButton" text="Nowy Dystrybutor" />
-            <Button fx:id="testujDystrybutoraButton1" mnemonicParsing="false" onAction="#testujDystrybutoraButton" text="Nowy Produkt" />
+            <Button fx:id="testujDystrybutoraButton1" contentDisplay="TOP" mnemonicParsing="false" onAction="#nowyProduktButton" prefHeight="25.0" prefWidth="517.0" text="Nowy Produkt" />
+            <Button mnemonicParsing="false" onAction="#nowyKlientButton" prefHeight="25.0" prefWidth="148.0" text="Nowy Klient" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ścieżka do Pliku:" />
             <TextField fx:id="sciezkaDoPliku" text="zapisy/zapis1.xml" />
             <HBox>
                <children>
-                  <Button fx:id="zapiszButton" mnemonicParsing="false" onAction="#zapiszSymulacje" text="Zapisz" />
-                  <Button fx:id="wczytajButton" mnemonicParsing="false" onAction="#wczytajSymulacje" text="Wczytaj" />
+                  <Button fx:id="zapiszButton" mnemonicParsing="false" onAction="#zapiszSymulacje" prefHeight="25.0" prefWidth="67.0" text="Zapisz" />
+                  <Button fx:id="wczytajButton" mnemonicParsing="false" onAction="#wczytajSymulacje" prefHeight="25.0" prefWidth="76.0" text="Wczytaj" />
                </children>
             </HBox>
+            <VBox>
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Abonament " />
+                  <TextField fx:id="cenaAbonamentuZwyklego" prefHeight="0.0" prefWidth="178.0" text="10" />
+               </children>
+            </VBox>
+            <VBox>
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Abonament Premium" />
+                  <TextField fx:id="cenaAbonamentuPremium" prefHeight="0.0" prefWidth="178.0" text="15" />
+               </children>
+            </VBox>
+            <Button mnemonicParsing="false" onAction="#ustawCeneAbonamentow" prefHeight="25.0" prefWidth="142.0" text="Zaktualizuj ceny" />
+            <VBox>
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Produkty" GridPane.rowIndex="1" />
+                  <ListView fx:id="listaProduktow" GridPane.rowIndex="1" GridPane.rowSpan="2" VBox.vgrow="ALWAYS" />
+               </children>
+            </VBox>
          </children>
       </VBox>
    </left>
@@ -33,7 +54,7 @@
       <AnchorPane BorderPane.alignment="CENTER" />
    </bottom>
    <right>
-      <AnchorPane BorderPane.alignment="CENTER" />
+      <AnchorPane maxWidth="1.0" prefWidth="1.0" BorderPane.alignment="CENTER" />
    </right>
    <top>
       <VBox prefHeight="0.0" prefWidth="575.0">
@@ -62,82 +83,85 @@
       </VBox>
    </top>
    <center>
-      <GridPane prefHeight="623.0" prefWidth="924.0" BorderPane.alignment="CENTER">
+      <GridPane BorderPane.alignment="CENTER">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="632.0" minWidth="10.0" prefWidth="594.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="456.0" minWidth="10.0" prefWidth="330.0" />
+          <ColumnConstraints hgrow="ALWAYS" maxWidth="-Infinity" minWidth="10.0" />
+          <ColumnConstraints hgrow="ALWAYS" maxWidth="-Infinity" minWidth="10.0" prefWidth="400.0" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
         </rowConstraints>
          <children>
             <VBox GridPane.rowIndex="1">
                <children>
-                  <GridPane>
-                     <columnConstraints>
-                        <ColumnConstraints fillWidth="false" hgrow="SOMETIMES" maxWidth="185.0" minWidth="10.0" prefWidth="88.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" percentWidth="80.0" />
-                     </columnConstraints>
-                     <rowConstraints>
-                        <RowConstraints minHeight="2.0" vgrow="SOMETIMES" />
-                     </rowConstraints>
+                  <VBox prefHeight="132.0" prefWidth="180.0" GridPane.columnIndex="1">
                      <children>
                         <VBox>
                            <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Produkty" GridPane.rowIndex="1" />
-                              <ListView fx:id="listaProduktow" GridPane.rowIndex="1" GridPane.rowSpan="2" />
+                              <HBox>
+                                 <children>
+                                    <Text fx:id="nazwaProduktu" strokeType="OUTSIDE" strokeWidth="0.0" text="Nazwa Filmu">
+                                       <HBox.margin>
+                                          <Insets right="10.0" />
+                                       </HBox.margin>
+                                    </Text>
+                                    <Text fx:id="dataProduktu" strokeType="OUTSIDE" strokeWidth="0.0" text="Data Produkcji">
+                                       <HBox.margin>
+                                          <Insets left="10.0" right="10.0" />
+                                       </HBox.margin>
+                                    </Text>
+                                    <Text fx:id="krajProduktu" strokeType="OUTSIDE" strokeWidth="0.0" text="Kraj Produkcji">
+                                       <HBox.margin>
+                                          <Insets left="10.0" right="10.0" />
+                                       </HBox.margin>
+                                    </Text>
+                                    <Text fx:id="nazwaProduktu12" strokeType="OUTSIDE" strokeWidth="0.0" text="Ocena:">
+                                       <HBox.margin>
+                                          <Insets left="10.0" right="10.0" />
+                                       </HBox.margin>
+                                    </Text>
+                                    <Text fx:id="jakoscProduktu" strokeType="OUTSIDE" strokeWidth="0.0" text="0/10">
+                                       <HBox.margin>
+                                          <Insets left="10.0" />
+                                       </HBox.margin>
+                                    </Text>
+                                 </children>
+                              </HBox>
+                              <HBox>
+                                 <children>
+                                    <ImageView fx:id="zdjecieProduktu" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="http://bi.gazeta.pl/im/8e/b6/16/z23817614ICR,HBO---Materialy-partnera.jpg" />
+                                       </image>
+                                    </ImageView>
+                                    <TextArea fx:id="opisProduktu" editable="false" nodeOrientation="LEFT_TO_RIGHT" text="&#10;" wrapText="true">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </TextArea>
+                                 </children>
+                              </HBox>
                            </children>
                         </VBox>
-                        <VBox prefHeight="132.0" prefWidth="180.0" GridPane.columnIndex="1">
+                        <VBox>
                            <children>
-                              <Text fx:id="nazwaProduktu" strokeType="OUTSIDE" strokeWidth="0.0" text="Nazwa Filmu" />
-                              <VBox>
+                              <HBox alignment="CENTER_LEFT">
                                  <children>
-                                    <HBox alignment="TOP_CENTER" fillHeight="false">
-                                       <children>
-                                          <ImageView fx:id="zdjecieProduktu" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="http://bi.gazeta.pl/im/8e/b6/16/z23817614ICR,HBO---Materialy-partnera.jpg" />
-                                             </image>
-                                          </ImageView>
-                                          <TextArea fx:id="opisProduktu" editable="false" nodeOrientation="LEFT_TO_RIGHT" text="&#10;" wrapText="true">
-                                             <font>
-                                                <Font size="16.0" />
-                                             </font>
-                                          </TextArea>
-                                       </children>
-                                       <VBox.margin>
-                                          <Insets />
-                                       </VBox.margin>
-                                    </HBox>
-                                    <GridPane>
-                                      <columnConstraints>
-                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                      </columnConstraints>
-                                      <rowConstraints>
-                                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                      </rowConstraints>
-                                       <children>
-                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
-                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.rowIndex="1" />
-                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" />
-                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                       </children>
-                                    </GridPane>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Cena :" />
+                                    <TextField fx:id="cenaProduktu" prefHeight="0.0" prefWidth="178.0" VBox.vgrow="NEVER" />
+                                    <Button mnemonicParsing="false" onAction="#ustawCeneProduktuButton" prefHeight="25.0" prefWidth="181.0" text="Zaktualizuj" />
                                  </children>
-                              </VBox>
+                              </HBox>
+                              <Button mnemonicParsing="false" onAction="#wycofajPozycjeButton" text="Wycofaj pozycję" HBox.hgrow="ALWAYS" />
                            </children>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
                         </VBox>
                      </children>
-                  </GridPane>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </VBox>
                </children>
             </VBox>
             <VBox GridPane.columnIndex="1" GridPane.rowIndex="1">
@@ -158,7 +182,7 @@
                   <ListView fx:id="listaUmow" prefHeight="200.0" prefWidth="26.0" />
                </children>
             </VBox>
-            <VBox prefHeight="204.0" prefWidth="505.0">
+            <VBox prefHeight="152.0" prefWidth="561.0">
                <children>
                   <HBox>
                      <children>
@@ -179,19 +203,34 @@
                         <Text fx:id="popularnosc" strokeType="OUTSIDE" strokeWidth="0.0" text="---" />
                      </children>
                   </HBox>
+                  <HBox />
                </children>
             </VBox>
             <VBox GridPane.rowIndex="2">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Oglądalność produktu" GridPane.rowIndex="2" />
-                  <LineChart fx:id="produktChart" animated="false" GridPane.rowIndex="2">
-                    <xAxis>
-                      <CategoryAxis side="BOTTOM" />
-                    </xAxis>
-                    <yAxis>
-                      <NumberAxis side="LEFT" />
-                    </yAxis>
-                  </LineChart>
+                  <HBox>
+                     <children>
+                        <VBox>
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Oglądalność produktu" GridPane.rowIndex="2" />
+                              <LineChart fx:id="produktChart" animated="false" prefHeight="190.0" prefWidth="564.0" GridPane.rowIndex="2">
+                                <xAxis>
+                                  <CategoryAxis side="BOTTOM" />
+                                </xAxis>
+                                <yAxis>
+                                  <NumberAxis side="LEFT" />
+                                </yAxis>
+                              </LineChart>
+                           </children>
+                        </VBox>
+                        <VBox>
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Aktorzy" />
+                              <ListView prefHeight="200.0" prefWidth="200.0" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
                </children>
             </VBox>
          </children>

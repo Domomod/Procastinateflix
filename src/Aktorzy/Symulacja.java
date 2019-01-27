@@ -5,6 +5,9 @@ import Produkt.Produkt;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.layout.Region;
 import sample.Controller;
 
 import java.beans.XMLDecoder;
@@ -15,12 +18,16 @@ import java.util.Map;
 
 import static java.lang.Thread.sleep;
 
+/**
+ *
+ */
 public class Symulacja implements Runnable, Serializable {
     private WlascicielSerwisu wlascicielSerwisu = new WlascicielSerwisu();
     transient private ObservableList<Produkt> produkty = FXCollections.observableArrayList();
     private ZbiorDystrybutorow dystrybutorzy = new ZbiorDystrybutorow();
     private ZbiorKlientow klienci = new ZbiorKlientow();
     private boolean endThread = false;
+    private int maxZadluzenie = -10000;
 
     private static OnChangeListener<WlascicielSerwisu> onWlascicielChangeListener;
     public static boolean isControllerCreated = false;
@@ -28,10 +35,36 @@ public class Symulacja implements Runnable, Serializable {
     public Symulacja() {
     }
 
+    /**
+     * Dodaje nowy produkt wewnatrz klasy Symulacja
+     *
+     * @param produkt
+     */
     public void dodajProdukt(Produkt produkt) {
-        getProdukty().add(produkt);
+        synchronized (this){
+            getProdukty().add(produkt);
+        }
+
     }
 
+
+    /**
+     * Usuwa produkt wewnatrz klasy Sumlacja
+     *
+     * @param produkt
+     */
+    public void usunProdukt(Produkt produkt) {
+        synchronized (this){
+            produkty.removeAll(produkt);
+        }
+
+    }
+
+    /**
+     * Watek symulacji. W jego ramach egzekwowane sa zawarte w syumulacji umowy.
+     * Aktualizowany jest wyswietlany stan wlasciciela.
+     * Oraz symulowany jest uplyw czasu
+     */
     @Override
     public void run() {
 
@@ -42,7 +75,7 @@ public class Symulacja implements Runnable, Serializable {
         watekKlientow.start();
 
 
-        while (true) {
+        while (!endThread) {
             try {
                 sleep(3600);
             } catch (InterruptedException e) {
@@ -51,22 +84,36 @@ public class Symulacja implements Runnable, Serializable {
 
             wlascicielSerwisu.wyegzekwujUmowy();
 
-            for (Produkt produkt : produkty) {
-                produkt.zaktualizujWykres();
+            synchronized (this){
+                for (Produkt produkt : produkty) {
+                    produkt.zaktualizujWykres();
+                }
             }
 
             if (isControllerCreated){
                 onWlascicielChangeListener.onChange(wlascicielSerwisu);
             }
 
+            if(wlascicielSerwisu.getKontoBankowe().getStanKonta() < -maxZadluzenie) {
+                String opisWiadomości = "DB - Właściciel serwisu VOD 'ProcastinateFlix' ogłasze bankructwo. Pogłoski mówią" +
+                        "że w czasie działalności dopuścił się wielu przestępstw podatkowych. Sprawą zajmuje się prokuratura.";
+                Alert alert = new Alert(Alert.AlertType.NONE, opisWiadomości, ButtonType.YES, ButtonType.NO);
+                alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+                alert.setTitle( "Breaking News");
+                alert.showAndWait();
+                endThreadInNextCycle();
+            }
+
             MiesiacRok.miesiacMinal();
+
+
         }
-
-        //klienci.endAllThreadsInNexCycle();
-        //dystrybutorzy.endAllThreadsInNexCycle();
-
     }
 
+    /**
+     * @return zwraca losowy Produkt znajdujacy sie juz wewnatrz symulacji (nie nowy wygenerowany)
+     * @throws BrakProduktowException wyjatek w wypadku gdy w symulacji nie ma zadnych produktow
+     */
     public Produkt getLosowyProdukt() throws  BrakProduktowException{
         if(produkty.isEmpty())
             throw new BrakProduktowException();
@@ -93,8 +140,13 @@ public class Symulacja implements Runnable, Serializable {
         return wlascicielSerwisu;
     }
 
-    public void endThreadInNextCycle(boolean endThread) {
-        this.endThread = endThread;
+    /**
+     * Ustawia flage dzięki ktorej funkcja run przy następnej iteracji zakonczy swoje działanie
+     */
+    public void endThreadInNextCycle() {
+        klienci.endAllThreadsInNexCycle();
+        dystrybutorzy.endAllThreadsInNexCycle();
+        this.endThread = true;
     }
 
     public static void setOnWlascicielChangeListener(OnChangeListener<WlascicielSerwisu> onWlascicielChangeListener) {
@@ -105,47 +157,15 @@ public class Symulacja implements Runnable, Serializable {
         stream.defaultReadObject();
         ArrayList<Produkt> temp = (ArrayList<Produkt>)stream.readObject();
         produkty = FXCollections.observableArrayList(temp);
+        Umowa.setRyczaltAbonamentuZwyklego((Integer)stream.readObject());
+        Umowa.setRyczaltAbonamentuPremium((Integer)stream.readObject());
     }
 
     private void writeObject(java.io.ObjectOutputStream stream) throws IOException {
         stream.defaultWriteObject();
         stream.writeObject(new ArrayList<Produkt>(produkty));
+        stream.writeObject(Umowa.getRyczaltAbonamentuZwyklego());
+        stream.writeObject(Umowa.getRyczaltAbonamentuPremium());
 
-    }
-
-    public void setWlascicielSerwisu(WlascicielSerwisu wlascicielSerwisu) {
-        this.wlascicielSerwisu = wlascicielSerwisu;
-    }
-
-    public void setProdukty(ObservableList<Produkt> produkty) {
-        this.produkty = produkty;
-    }
-
-    public void setDystrybutorzy(ZbiorDystrybutorow dystrybutorzy) {
-        this.dystrybutorzy = dystrybutorzy;
-    }
-
-    public void setKlienci(ZbiorKlientow klienci) {
-        this.klienci = klienci;
-    }
-
-    public boolean isEndThread() {
-        return endThread;
-    }
-
-    public void setEndThread(boolean endThread) {
-        this.endThread = endThread;
-    }
-
-    public static OnChangeListener<WlascicielSerwisu> getOnWlascicielChangeListener() {
-        return onWlascicielChangeListener;
-    }
-
-    public static boolean isIsControllerCreated() {
-        return isControllerCreated;
-    }
-
-    public static void setIsControllerCreated(boolean isControllerCreated) {
-        Symulacja.isControllerCreated = isControllerCreated;
     }
 }

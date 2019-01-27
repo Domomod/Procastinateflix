@@ -1,5 +1,7 @@
 package Aktorzy;
 
+import Produkt.Produkt;
+
 import java.io.Serializable;
 
 public class WlascicielSerwisu extends Osoba implements Serializable {
@@ -12,13 +14,19 @@ public class WlascicielSerwisu extends Osoba implements Serializable {
         super(new KontoBankowe(kwota_startowa));
     }
 
+    /**
+     * Egzekwuje wszystkie umowy. Jesli jest to umowa wlasciciela z dystrybutorem traci pieniadze,
+     * jesli klienta z wlascicielem zyskuje.
+     */
     @Override
     public void wyegzekwujUmowy() {
         Integer stanKontaPrzed = super.getKontoBankowe().getStanKonta();
-        for (Umowa umowa : super.getUmowy()) {
-            umowa.wyegzekwuj();
-
+        synchronized (super.getUmowyLock()) {
+            for (Umowa umowa : super.getUmowy()) {
+                umowa.wyegzekwuj();
+            }
         }
+
         Integer stanKontaPo = super.getKontoBankowe().getStanKonta();
         podsumowanieMiesiaca = stanKontaPo - stanKontaPrzed;
     }

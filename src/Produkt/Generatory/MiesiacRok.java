@@ -5,12 +5,18 @@ public class MiesiacRok {
     private static int miesiac = 0;
     private static Integer rok = 2018;
 
+    /**
+     * @return zwraca w postaci lancucha znakow obecnie pamietany miesiac i rok. Format miesiac rok.
+     */
     synchronized static public String getMiesiacRok(){
         String miesiac = Miesiac.terazMiesiac();
         String nazwa = miesiac + " " + rok.toString();
         return nazwa;
     }
 
+    /**
+     * Zapamietuje kolejny miesiac.
+     */
     synchronized static public void miesiacMinal(){
         if(miesiac == 11)
             rok++;
