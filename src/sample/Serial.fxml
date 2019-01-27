@@ -89,14 +89,14 @@
           <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints vgrow="NEVER" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
         </rowConstraints>
          <children>
             <VBox GridPane.rowIndex="1">
                <children>
-                  <VBox GridPane.columnIndex="1">
+                  <VBox prefHeight="132.0" prefWidth="180.0" GridPane.columnIndex="1">
                      <children>
                         <VBox>
                            <children>
@@ -147,44 +147,14 @@
                         </VBox>
                         <VBox alignment="BOTTOM_LEFT">
                            <children>
-                              <HBox>
+                              <HBox alignment="CENTER_LEFT">
                                  <children>
-                                    <VBox>
-                                       <children>
-                                          <HBox alignment="CENTER_LEFT">
-                                             <children>
-                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Cena :" />
-                                                <TextField fx:id="cenaProduktu" prefHeight="0.0" prefWidth="178.0" VBox.vgrow="NEVER" />
-                                                <Button mnemonicParsing="false" onAction="#ustawCeneProduktuButton" prefHeight="25.0" prefWidth="181.0" text="Zaktualizuj" />
-                                             </children>
-                                          </HBox>
-                                          <Button mnemonicParsing="false" onAction="#wycofajPozycjeButton" text="Wycofaj pozycję" HBox.hgrow="ALWAYS" />
-                                       </children>
-                                    </VBox>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Cena :" />
+                                    <TextField fx:id="cenaProduktu" prefHeight="0.0" prefWidth="178.0" VBox.vgrow="NEVER" />
+                                    <Button mnemonicParsing="false" onAction="#ustawCeneProduktuButton" prefHeight="25.0" prefWidth="181.0" text="Zaktualizuj" />
                                  </children>
                               </HBox>
-                              <HBox>
-                                 <children>
-                                    <VBox>
-                                       <children>
-                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sezony" />
-                                          <ListView />
-                                       </children>
-                                    </VBox>
-                                    <VBox>
-                                       <children>
-                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Odcinki" />
-                                          <ListView />
-                                       </children>
-                                    </VBox>
-                                    <VBox>
-                                       <children>
-                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Aktorzy" />
-                                          <ListView />
-                                       </children>
-                                    </VBox>
-                                 </children>
-                              </HBox>
+                              <Button mnemonicParsing="false" onAction="#wycofajPozycjeButton" text="Wycofaj pozycję" HBox.hgrow="ALWAYS" />
                            </children>
                         </VBox>
                      </children>
@@ -251,6 +221,12 @@
                                   <NumberAxis side="LEFT" />
                                 </yAxis>
                               </LineChart>
+                           </children>
+                        </VBox>
+                        <VBox>
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Aktorzy" />
+                              <ListView prefHeight="200.0" prefWidth="200.0" />
                            </children>
                         </VBox>
                      </children>
